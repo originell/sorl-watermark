@@ -21,7 +21,7 @@ Change sorl's thumbnail engine to the fitting one from sorl-watermark.
 See _Engines_ for all available engines. Here is an example using the PIL
 engine.
 
-    THUMBNAIL_ENGINE = 'sorl_watermark.engines.PILMark'
+    THUMBNAIL_ENGINE = 'sorl.watermark.engines.PILMark'
 
 Next up you tell it which image should be used as a watermark. Note that this
 file has to live somewhere inside STATIC\_ROOT.
@@ -37,8 +37,8 @@ it's size or ways to selectively apply watermarks.
 ## Engines
 sorl-watermark supports two of sorl-thumbnails backends:
 
-* PIL (sorl\_watermark.engines.PILMark)
-* GraphicsMagick (Magick++) via pgmagick (sorl\_watermark.engines.MagickMark)
+* PIL (sorl.watermark.engines.pil)
+* GraphicsMagick (Magick++) via pgmagick (sorl.watermark.engines.magick)
 
 ## Advanced Usage
 sorl-watermark also _enhances_ the default `thumbnail` templatetag with some
