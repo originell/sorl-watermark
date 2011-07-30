@@ -75,7 +75,7 @@ The following settings are available
   Stamp a watermark on every image.  
   Default is True.
 
-* THUMBANIL\_WATERMARK\_SIZE  
+* THUMBNAIL\_WATERMARK\_SIZE  
   Change the size of the watermark. This can either be a geometry string, as
   is usual with sorl-thumbnail ("x200", "200x200"), or a percentage.  
   If given a percentage, the watermark will always be the given percentage
