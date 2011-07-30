@@ -1,4 +1,5 @@
 # sorl-watermark
+## This is under heavy development and does not yet support all features mentioned here.
 sorl-watermark offers drop-in engines for sorl-thumbnail, which automagically
 insert a specified image as watermark on top of the original thumbnail.
 
@@ -21,7 +22,7 @@ Change sorl's thumbnail engine to the fitting one from sorl-watermark.
 See _Engines_ for all available engines. Here is an example using the PIL
 engine.
 
-    THUMBNAIL_ENGINE = 'sorl.watermark.engines.PILMark'
+    THUMBNAIL_ENGINE = 'sorl.watermark.engines.pil'
 
 Next up you tell it which image should be used as a watermark. Note that this
 file has to live somewhere inside STATIC\_ROOT.
@@ -60,6 +61,8 @@ The following new options are available:
 * watermark\_pos=gravity  
   Specifies where the watermark shall be put. Accepts the same options as the
   THUMBNAIL\_WATERMARK\_POSITION setting.
+* watermark_alpha=integer
+  Sets the watermark's opacity. Has to be a value between 0 and 1.
 
 ## Settings Reference
 The following settings are available
@@ -68,11 +71,19 @@ The following settings are available
   Sets the image to be used as a watermark. The file must live within 
   STATIC\_ROOT.
 
+* THUMBNAIL\_WATERMARK_ALWAYS  
+  Stamp a watermark on every image.  
+  Default is True.
+
 * THUMBANIL\_WATERMARK\_SIZE  
   Change the size of the watermark. This can either be a geometry string, as
   is usual with sorl-thumbnail ("x200", "200x200"), or a percentage.  
   If given a percentage, the watermark will always be the given percentage
   of the thumbnail size.
+
+* THUMBNAIL\_WATERMARK_OPACITY
+  An integer from 0 to 1, specifying the opacity of the watermark.  
+  Default is 0 (opaque).
 
 * THUMBNAIL\_WATERMARK\_POSITION  
   Specifies the position of the watermark. You can either pass this a gravity
@@ -85,6 +96,7 @@ The following settings are available
       * "south east"
       * "north west"
       * "south west"
+      * "center"
 
-  or a tuple (x, y).
+  or a tuple (x, y). Default: "south east"
 
