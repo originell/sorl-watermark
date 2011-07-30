@@ -8,6 +8,9 @@ the opacity.
 If you are looking for a sorl engine to dynamically create text watermarks,
 you might want to have a look at [zeus/watermark](https://bitbucket.org/zeus/watermarker/overview).
 
+_Note_: This project uses [Semantic Versioning](http://semver.org/) as it's
+        versioning scheme.
+
 ## Setup
 Install sorl-watermark, either by cloning from the [github repository]() or
 by installing it via `pip`:
