@@ -61,7 +61,7 @@ The following new options are available:
 * watermark\_pos=gravity  
   Specifies where the watermark shall be put. Accepts the same options as the
   THUMBNAIL\_WATERMARK\_POSITION setting.
-* watermark_alpha=integer
+* watermark_alpha=integer  
   Sets the watermark's opacity. Has to be a value between 0 and 1.
 
 ## Settings Reference
