@@ -14,7 +14,7 @@ class Engine(WatermarkEngineBase, PILEngine):
 
     # the following is heavily copied from
     # http://code.activestate.com/recipes/362879-watermark-with-pil/
-    def _watermark(self, image, watermark_path, opacity): #, position):
+    def _watermark(self, image, watermark_path, opacity, size): #, position):
                    #mark_width, mark_height):
         watermark = self.get_image(open(watermark_path))
         if opacity < 1:
@@ -24,7 +24,17 @@ class Engine(WatermarkEngineBase, PILEngine):
         # create a transparent layer the size of the image and draw the
         # watermark in that layer.
         im_size = image.size
+
         mark_size = watermark.size
+        if size:
+            if hasattr(size, '__iterable__'):
+                # a tuple or any iterable already
+                mark_size = size
+            else:
+                # percentages hopefully
+                mark_size = map(lambda coord: coord*size, mark_size)
+            watermark = self.scale(watermark, mark_size)
+
         layer = Image.new('RGBA', im_size, (0,0,0,0))
         position = (im_size[0]-mark_size[0], im_size[1]-mark_size[1])
         layer.paste(watermark, position)
