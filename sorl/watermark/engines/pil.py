@@ -18,7 +18,7 @@ class Engine(WatermarkEngineBase, PILEngine):
                    #mark_width, mark_height):
         watermark = self.get_image(open(watermark_path))
         if opacity < 1:
-            watermark = reduce_opacity(watermark, opacity)
+            watermark = self._reduce_opacity(watermark, opacity)
         if image.mode != 'RGBA':
             image = image.convert('RGBA')
         # create a transparent layer the size of the image and draw the
@@ -30,7 +30,7 @@ class Engine(WatermarkEngineBase, PILEngine):
         layer.paste(watermark, position)
         return Image.composite(layer, image, layer)
 
-    def _reduce_opacity(image, opacity):
+    def _reduce_opacity(self, image, opacity):
         if image.mode != 'RGBA':
             image = image.convert('RGBA')
         else:
