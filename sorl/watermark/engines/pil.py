@@ -13,7 +13,7 @@ class Engine(PILEngine):
 
     # the following is heavily copied from
     # http://code.activestate.com/recipes/362879-watermark-with-pil/
-    def _watermark(self, image, mark, opacity, position)
+    def _watermark(self, image, mark, opacity, position):
                    #mark_width, mark_height):
         if opacity < 1:
             mark = reduce_opacity(mark, opacity)
