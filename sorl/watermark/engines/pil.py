@@ -33,7 +33,10 @@ class Engine(WatermarkEngineBase, PILEngine):
             else:
                 # percentages hopefully
                 mark_size = map(lambda coord: coord*size, mark_size)
-            watermark = self.scale(watermark, mark_size)
+            # TODO: Might be useful to expose the crop/upscalce options
+            #       to django settings
+            watermark = self.scale(watermark, mark_size, {'crop': 'center',
+                                                          'upscale': False})
 
         layer = Image.new('RGBA', im_size, (0,0,0,0))
         position = (im_size[0]-mark_size[0], im_size[1]-mark_size[1])
