@@ -4,10 +4,14 @@ from django.conf import settings
 from sorl.thumbnail.engines.base import EngineBase as ThumbnailEngineBase
 
 
+# TODO: Put this in it's own package, as done by sorl.thumbnail
+STATIC_ROOT = getattr(settings, 'STATIC_ROOT')
+THUMBNAIL_WATERMARK = getattr(settings, 'THUMBNAIL_WATERMARK', False)
 THUMBNAIL_WATERMARK_ALWAYS = getattr(settings, 'THUMBNAIL_WATERMARK_ALWAYS',
                                      True)
-THUMBNAIL_WATERMARK = getattr(settings, 'THUMBNAIL_WATERMARK', False)
-STATIC_ROOT = getattr(settings, 'STATIC_ROOT')
+THUMBNAIL_WATERMARK_OPACITY = getattr(settings, 'THUMBNAIL_WATERMARK_OPACITY',
+                                      1)
+assert 0 <= THUMBNAIL_WATERMARK_OPACITY <= 1
 
 
 class WatermarkEngineBase(ThumbnailEngineBase):
@@ -35,7 +39,7 @@ class WatermarkEngineBase(ThumbnailEngineBase):
         watermark_path = os.path.join(STATIC_ROOT, THUMBNAIL_WATERMARK)
 
         if not 'watermark_alpha' in options:
-            options['watermark_alpha'] = 1
+            options['watermark_alpha'] = THUMBNAIL_WATERMARK_OPACITY
 
         return self._watermark(image, watermark_path,
                                options['watermark_alpha'])
