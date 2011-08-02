@@ -6,7 +6,7 @@ def parse_geometry(geometry, ratio=None):
     """
     if not '%' in geometry:
         # fall back to old parser
-        xy_geometry_parser(geometry, ratio)
+        return xy_geometry_parser(geometry, ratio)
 
     # parse with float so geometry strings like "42.11%" are possible
     return float(geometry.strip('%'))/100.0
