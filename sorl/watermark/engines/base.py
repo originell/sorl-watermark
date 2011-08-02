@@ -22,7 +22,7 @@ class WatermarkEngineBase(ThumbnailEngineBase):
                 'watermark_pos'   in options or
                 'watermark_size'  in options or
                 'watermark_alpha' in options):
-            image = image.watermark(image, options)
+            image = self.watermark(image, options)
         return image
 
     def watermark(self, image, options):
