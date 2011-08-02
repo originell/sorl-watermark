@@ -37,4 +37,5 @@ class WatermarkEngineBase(ThumbnailEngineBase):
         if not 'watermark_alpha' in options:
             options['watermark_alpha'] = 1
 
-        self._watermark(image, watermark_path, options['watermark_alpha'])
+        return self._watermark(image, watermark_path,
+                               options['watermark_alpha'])
