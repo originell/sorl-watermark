@@ -13,19 +13,20 @@ class Engine(PILEngine):
 
     # the following is heavily copied from
     # http://code.activestate.com/recipes/362879-watermark-with-pil/
-    def _watermark(self, image, mark, opacity, position):
+    def _watermark(self, image, watermark_path, opacity): #, position):
                    #mark_width, mark_height):
+        watermark = self.get_image(open(watermark_path))
         if opacity < 1:
-            mark = reduce_opacity(mark, opacity)
+            watermark = reduce_opacity(watermark, opacity)
         if image.mode != 'RGBA':
             image = image.convert('RGBA')
         # create a transparent layer the size of the image and draw the
         # watermark in that layer.
         im_size = image.size
-        mark_size = mark.size
+        mark_size = watermark.size
         layer = Image.new('RGBA', im_size, (0,0,0,0))
         position = (im_size[0]-mark_size[0], im_size[1]-mark_size[1])
-        layer.paste(mark, position)
+        layer.paste(watermark, position)
         return Image.composite(layer, image, layer)
 
     def _reduce_opacity(image, opacity):

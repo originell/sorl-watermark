@@ -1,8 +1,14 @@
+import os
+
 from django.conf import settings
 from sorl.thumbnail.engines.base import EngineBase as ThumbnailEngineBase
 
+
 THUMBNAIL_WATERMARK_ALWAYS = getattr(settings, 'THUMBNAIL_WATERMARK_ALWAYS',
                                      True)
+THUMBNAIL_WATERMARK = getattr(settings, 'THUMBNAIL_WATERMARK', False)
+STATIC_ROOT = getattr(settings, 'STATIC_ROOT')
+
 
 class WatermarkEngineBase(ThumbnailEngineBase):
     """
@@ -12,15 +18,23 @@ class WatermarkEngineBase(ThumbnailEngineBase):
         image = super(ThumbnailEngineBase, self).create(image, geometry,
                                                         options)
         if (THUMBNAIL_WATERMARK_ALWAYS or
-                'watermark' in options or
-                'watermark_size' in options or
-                'watermark_pos' in options):
-            image = image.watermark(image, geometry, options)
+                'watermark'       in options or
+                'watermark_pos'   in options or
+                'watermark_size'  in options or
+                'watermark_alpha' in options):
+            image = image.watermark(image, options)
         return image
 
-    def watermark(self, image, geometry, options):
+    def watermark(self, image, options):
         """
         Wrapper for ``_watermark``
         """
-        raise NotImplementedError
+        if not THUMBNAIL_WATERMARK:
+            raise AttributeError('Trying to apply a watermark, '
+                                 'however no THUMBNAIL_WATERMARK defined')
+        watermark_path = os.path.join(STATIC_ROOT, THUMBNAIL_WATERMARK)
 
+        if not 'watermark_alpha' in options:
+            options['watermark_alpha'] = 1
+
+        self._watermark(image, watermark_path, options['watermark_alpha'])
