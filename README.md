@@ -71,7 +71,7 @@ The following settings are available
   Sets the image to be used as a watermark. The file must live within 
   STATIC\_ROOT.
 
-* THUMBNAIL\_WATERMARK_ALWAYS  
+* THUMBNAIL\_WATERMARK\_ALWAYS  
   Stamp a watermark on every image.  
   Default is True.
 
@@ -81,7 +81,7 @@ The following settings are available
   If given a percentage, the watermark will always be the given percentage
   of the thumbnail size.
 
-* THUMBNAIL\_WATERMARK_OPACITY
+* THUMBNAIL\_WATERMARK\_OPACITY
   An integer from 0 to 1, specifying the opacity of the watermark.  
   Default is 0 (opaque).
 
