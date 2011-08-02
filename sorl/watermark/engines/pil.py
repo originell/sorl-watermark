@@ -27,7 +27,7 @@ class Engine(WatermarkEngineBase, PILEngine):
 
         mark_size = watermark.size
         if size:
-            if hasattr(size, '__iterable__'):
+            if hasattr(size, '__getitem__'):
                 # a tuple or any iterable already
                 mark_size = size
             else:
