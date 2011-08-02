@@ -8,7 +8,7 @@ setup(
     author='Luis Nell',
     author_email='cooperate@originell.org',
     packages=find_packages(),
-    platform='any',
+    platforms='any',
     description='Image based watermarks for sorl-thumbnail',
     long_description=open('README.md').read(),
     classifiers=[
