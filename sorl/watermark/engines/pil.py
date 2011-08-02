@@ -1,4 +1,5 @@
 from sorl.thumbnail.engines.pil_engine import Engine as PILEngine
+from sorl.watermark.engines.base import WatermarkEngineBase
 
 try:
     from PIL import Image, ImageEnhance
@@ -6,7 +7,7 @@ except ImportError:
     import Image, ImageEnhance
 
 
-class Engine(PILEngine):
+class Engine(WatermarkEngineBase, PILEngine):
     """
     PIL based thumbnailing engine with watermark support.
     """

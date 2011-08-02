@@ -15,7 +15,7 @@ class WatermarkEngineBase(ThumbnailEngineBase):
     Extend sorl.thumbnail base engine to support watermarks.
     """
     def create(self, image, geometry, options):
-        image = super(ThumbnailEngineBase, self).create(image, geometry,
+        image = super(WatermarkEngineBase, self).create(image, geometry,
                                                         options)
         if (THUMBNAIL_WATERMARK_ALWAYS or
                 'watermark'       in options or

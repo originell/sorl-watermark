@@ -1,8 +1,9 @@
 from pgmagick import Geometry, Image
 from sorl.thumbnail.engines.pgmagick_engine import Engine as MagickEngine
+from sorl.watermark.engines.base import WatermarkEngineBase
 
 
-class Engine(MagickEngine):
+class Engine(WatermarkEngineBase, MagickEngine):
     """
     PGMagick based engine with watermark support.
     """
