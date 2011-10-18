@@ -1,5 +1,8 @@
 # sorl-watermark
 ## This is under heavy development and does not yet support all features mentioned here.
+### Currently I do not have much time, so generally a basic PIL based watermark is implemented. Feel free to fork!
+#### Sorry :-S
+
 sorl-watermark offers drop-in engines for sorl-thumbnail, which automagically
 insert a specified image as watermark on top of the original thumbnail.
 
@@ -22,7 +25,7 @@ Change sorl's thumbnail engine to the fitting one from sorl-watermark.
 See _Engines_ for all available engines. Here is an example using the PIL
 engine.
 
-    THUMBNAIL_ENGINE = 'sorl.watermark.engines.pil'
+    THUMBNAIL_ENGINE = 'sorl_watermarker.engines.pil'
 
 Next up you tell it which image should be used as a watermark. Note that this
 file has to live somewhere inside STATIC\_ROOT.
@@ -38,8 +41,8 @@ it's size or ways to selectively apply watermarks.
 ## Engines
 sorl-watermark supports two of sorl-thumbnails backends:
 
-* PIL (sorl.watermark.engines.pil)
-* GraphicsMagick (Magick++) via pgmagick (sorl.watermark.engines.magick)
+* PIL (sorl_watermarker.engines.pil)
+* GraphicsMagick (Magick++) via pgmagick (sorl_watermarker.engines.magick)
 
 ## Advanced Usage
 sorl-watermark also _enhances_ the default `thumbnail` templatetag with some
