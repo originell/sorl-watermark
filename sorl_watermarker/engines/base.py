@@ -2,7 +2,7 @@ import os
 
 from django.conf import settings
 from sorl.thumbnail.engines.base import EngineBase as ThumbnailEngineBase
-from sorl.watermark.parsers import parse_geometry
+from sorl_watermarker.parsers import parse_geometry
 
 # TODO: Put this in it's own package, as done by sorl.thumbnail
 STATIC_ROOT = getattr(settings, 'STATIC_ROOT')

@@ -1,5 +1,5 @@
 from sorl.thumbnail.engines.pil_engine import Engine as PILEngine
-from sorl.watermark.engines.base import WatermarkEngineBase
+from sorl_watermarker.engines.base import WatermarkEngineBase
 
 try:
     from PIL import Image, ImageEnhance
