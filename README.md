@@ -19,13 +19,13 @@ _Note_: This project uses [Semantic Versioning](http://semver.org/) as it's
 Install sorl-watermark, either by cloning from the [github repository]() or
 by installing it via `pip`:
 
-    pip install sorl-watermark
+    pip install sorl_watermarker
 
 Change sorl's thumbnail engine to the fitting one from sorl-watermark.
 See _Engines_ for all available engines. Here is an example using the PIL
 engine.
 
-    THUMBNAIL_ENGINE = 'sorl_watermarker.engines.pil'
+    THUMBNAIL_ENGINE = 'sorl_watermarker.engines.pil.Engine'
 
 Next up you tell it which image should be used as a watermark. Note that this
 file has to live somewhere inside STATIC\_ROOT.
