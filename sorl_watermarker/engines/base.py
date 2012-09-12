@@ -1,6 +1,7 @@
 import os
 
 from django.conf import settings
+from django.contrib.staticfiles.finders import find
 from sorl.thumbnail.engines.base import EngineBase as ThumbnailEngineBase
 from sorl_watermarker.parsers import parse_geometry
 
@@ -38,10 +39,12 @@ class WatermarkEngineBase(ThumbnailEngineBase):
 
         Takes care of all the options handling.
         """
-        if not THUMBNAIL_WATERMARK:
+        watermark_img = options.get('watermark', THUMBNAIL_WATERMARK)
+
+        if not watermark_img:
             raise AttributeError('Trying to apply a watermark, '
-                                 'however no THUMBNAIL_WATERMARK defined')
-        watermark_path = os.path.join(STATIC_ROOT, THUMBNAIL_WATERMARK)
+                                 'however no THUMBNAIL_WATERMARK defined, and watermark not set on tag')
+        watermark_path = find(watermark_img)
 
         if not 'watermark_alpha' in options:
             options['watermark_alpha'] = THUMBNAIL_WATERMARK_OPACITY
