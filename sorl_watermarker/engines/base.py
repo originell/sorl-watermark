@@ -17,6 +17,7 @@ assert 0 <= THUMBNAIL_WATERMARK_OPACITY <= 1 # TODO: raise a ValueError here?
 
 THUMBNAIL_WATERMARK_SIZE = getattr(settings, 'THUMBNAIL_WATERMARK_SIZE', False)
 
+THUMBNAIL_WATERMARK_POSITION = getattr(settings, 'THUMBNAIL_WATERMARK_POSITION', False)
 
 class WatermarkEngineBase(ThumbnailEngineBase):
     """
@@ -59,6 +60,11 @@ class WatermarkEngineBase(ThumbnailEngineBase):
         else:
             options['watermark_size'] = False
 
+        # Position added
+        if not 'watermark_pos' in options:
+            options['watermark_pos'] = THUMBNAIL_WATERMARK_POSITION
+
+
         return self._watermark(image, watermark_path,
                                options['watermark_alpha'],
-                               options['watermark_size'])
+                               options['watermark_size'], options['watermark_pos'])
