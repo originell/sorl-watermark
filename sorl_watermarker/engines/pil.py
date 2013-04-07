@@ -58,27 +58,28 @@ class Engine(WatermarkEngineBase, PILEngine):
 
     def _define_position(self, position_string, im_size, mark_size):
         pos_list = position_string.split(' ')
-        longitude_values = {'west':0, 'east':im_size[0]-mark_size[0]}
-        latitude_values =  {'north':0, 'south':im_size[1]-mark_size[1]}
+        coords = {'x': {'west': 0,
+                        'east': im_size[0] - mark_size[0]},
+                  'y': {'north': 0,
+                        'south': im_size[1] - mark_size[1]},
+        }
         # if values can be parsed as numeric
         try:
-            x_abs_value = int(pos_list[0])
-            y_abs_value = int(pos_list[1])
+            x_abs = int(pos_list[0])
+            y_abs = int(pos_list[1])
             # values below 0
-            x_pos = x_abs_value if x_abs_value >= 0 else longitude_values['east'] \
-                                                         + x_abs_value
-            y_pos = y_abs_value if y_abs_value >= 0 else latitude_values['south'] \
-                                                         + y_abs_value
+            x_pos = x_abs if x_abs >= 0 else coords['x']['east'] + x_abs
+            y_pos = y_abs if y_abs >= 0 else coords['y']['south'] + y_abs
             position = (x_pos, y_pos)
         # if the values are not a pair of numbers
         except ValueError:
             if pos_list == ['center']:
-                position = (longitude_values['east']/2,latitude_values['south']/2)
+                position = (coords['x']['east']/2, coords['y']['south']/2)
             else:
-                lon_val = [lon for lon in pos_list if lon in longitude_values]
-                lat_val = [lat for lat in pos_list if lat in latitude_values]
-                lon_key = lon_val[0] if len(lon_val) > 0 else 'east'
-                lat_key = lat_val[0] if len(lat_val) > 0 else 'south'
-                position = (longitude_values[lon_key], latitude_values[lat_key])
+                x_val = [lon for lon in pos_list if lon in coords['x']]
+                y_val = [lat for lat in pos_list if lat in coords['y']]
+                x_key = x_val[0] if len(x_val) > 0 else 'east'
+                y_key = y_val[0] if len(y_val) > 0 else 'south'
+                position = (coords['x'][x_key], coords['y'][y_key])
         return position
 
