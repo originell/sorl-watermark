@@ -101,5 +101,7 @@ The following settings are available
       * "south west"
       * "center"
 
-  or a tuple (x, y). Default: "south east"
+  or a pair of values ("20 20" would place watermark near the left-top corner,
+  "-20 -20" - near the right-bottom corner).  Default: "south east"
+
 
