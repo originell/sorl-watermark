@@ -62,7 +62,7 @@ class WatermarkEngineBase(ThumbnailEngineBase):
 
         # Position added
         if not 'watermark_pos' in options:
-            options['watermark_pos'] = THUMBNAIL_WATERMARK_POSITION
+            options['watermark_pos'] = THUMBNAIL_WATERMARK_POSITION or 'south east'
 
 
         return self._watermark(image, watermark_path,
