@@ -1,10 +1,10 @@
 # sorl-watermark
-## This is under heavy development and does not yet support all features mentioned here.
-### Currently I do not have much time, so generally a basic PIL based watermark is implemented. Feel free to fork!
-#### Sorry :-S
+
+As of 12th July 2013, *vbazhin* will be taking over development and take care of implementing all the
+mentioned features. Everybody welcome him with a warm applause :D!
 
 sorl-watermark offers drop-in engines for sorl-thumbnail, which automagically
-insert a specified image as watermark on top of the original thumbnail.
+insert a specified image as watermark on top of the original thumbnail. 
 
 Of course everything is configurable, from watermark image to the position and
 the opacity.
