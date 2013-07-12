@@ -57,38 +57,38 @@ The following new options are available:
 
 * `watermark=imagefile`  
   This options takes an ImageFile and uses this one instead of the default
-  watermark file, set via `THUMBNAIL\_WATERMARK`
-* `watermark\_size="x200"`  
+  watermark file, set via `THUMBNAIL_WATERMARK`
+* `watermark_size="x200"`  
   Changes the watermark's size. Takes the same options as the
-  `THUMBNAIL\_WATERMARK\_SIZE` option.
-* `watermark\_pos="north east"`  
+  `THUMBNAIL_WATERMARK_SIZE` option.
+* `watermark_pos="north east"`  
   Specifies where the watermark shall be put. Accepts the same options as the
-  `THUMBNAIL\_WATERMARK\_POSITION` setting.
+  `THUMBNAIL_WATERMARK_POSITION` setting.
 * `watermark_alpha=0.9`  
   Sets the watermark's opacity. Has to be a value between 0 and 1.
 
 ## Settings Reference
 The following settings are available
 
-* `THUMBNAIL\_WATERMARK`  
+* `THUMBNAIL_WATERMARK`  
   Sets the image to be used as a watermark. The file must live within 
-  `STATIC\_ROOT`.
+  `STATIC_ROOT`.
 
-* `THUMBNAIL\_WATERMARK\_ALWAYS`  
+* `THUMBNAIL_WATERMARK_ALWAYS`  
   Stamp a watermark on every image.  
   Default is `True`.
 
-* `THUMBNAIL\_WATERMARK\_SIZE`  
+* `THUMBNAIL_WATERMARK_SIZE`  
   Change the size of the watermark. This can either be a geometry string, as
   is usual with sorl-thumbnail ("x200", "200x200"), or a percentage.  
   If given a percentage, the watermark will always be the given percentage
   of the thumbnail size.
 
-* `THUMBNAIL\_WATERMARK\_OPACITY`
+* `THUMBNAIL_WATERMARK_OPACITY`
   An integer from 0 to 1, specifying the opacity of the watermark.  
   Default is `0` (opaque).
 
-* `THUMBNAIL\_WATERMARK\_POSITION`  
+* `THUMBNAIL_WATERMARK_POSITION`  
   Specifies the position of the watermark. You can either pass this a gravity
   like
       * "north"
