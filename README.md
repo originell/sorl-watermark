@@ -55,40 +55,40 @@ By default, the templatetag syntax is:
 
 The following new options are available:
 
-* watermark=imagefile  
+* `watermark=imagefile`  
   This options takes an ImageFile and uses this one instead of the default
-  watermark file, set via THUMBNAIL\_WATERMARK
-* watermark\_size=geometry  
+  watermark file, set via `THUMBNAIL\_WATERMARK`
+* `watermark\_size="x200"`  
   Changes the watermark's size. Takes the same options as the
-  THUMBNAIL\_WATERMARK\_SIZE option.
-* watermark\_pos=gravity  
+  `THUMBNAIL\_WATERMARK\_SIZE` option.
+* `watermark\_pos="north east"`  
   Specifies where the watermark shall be put. Accepts the same options as the
-  THUMBNAIL\_WATERMARK\_POSITION setting.
-* watermark_alpha=integer  
+  `THUMBNAIL\_WATERMARK\_POSITION` setting.
+* `watermark_alpha=0.9`  
   Sets the watermark's opacity. Has to be a value between 0 and 1.
 
 ## Settings Reference
 The following settings are available
 
-* THUMBNAIL\_WATERMARK  
+* `THUMBNAIL\_WATERMARK`  
   Sets the image to be used as a watermark. The file must live within 
-  STATIC\_ROOT.
+  `STATIC\_ROOT`.
 
-* THUMBNAIL\_WATERMARK\_ALWAYS  
+* `THUMBNAIL\_WATERMARK\_ALWAYS`  
   Stamp a watermark on every image.  
-  Default is True.
+  Default is `True`.
 
-* THUMBNAIL\_WATERMARK\_SIZE  
+* `THUMBNAIL\_WATERMARK\_SIZE`  
   Change the size of the watermark. This can either be a geometry string, as
   is usual with sorl-thumbnail ("x200", "200x200"), or a percentage.  
   If given a percentage, the watermark will always be the given percentage
   of the thumbnail size.
 
-* THUMBNAIL\_WATERMARK\_OPACITY
+* `THUMBNAIL\_WATERMARK\_OPACITY`
   An integer from 0 to 1, specifying the opacity of the watermark.  
-  Default is 0 (opaque).
+  Default is `0` (opaque).
 
-* THUMBNAIL\_WATERMARK\_POSITION  
+* `THUMBNAIL\_WATERMARK\_POSITION`  
   Specifies the position of the watermark. You can either pass this a gravity
   like
       * "north"
@@ -102,6 +102,7 @@ The following settings are available
       * "center"
 
   or with a pair of values in pixels ("20 20" would place watermark near the left-top corner,
-  "-20 -20" - near the right-bottom corner).  Default: "south east"
+  "-20 -20" - near the right-bottom corner).  
+  Default: `"south east"`
 
 
