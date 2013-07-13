@@ -9,10 +9,8 @@ from sorl_watermarker.parsers import parse_geometry
 STATIC_ROOT = getattr(settings, 'STATIC_ROOT')
 
 THUMBNAIL_WATERMARK = getattr(settings, 'THUMBNAIL_WATERMARK', False)
-THUMBNAIL_WATERMARK_ALWAYS = getattr(settings, 'THUMBNAIL_WATERMARK_ALWAYS',
-                                     True)
-THUMBNAIL_WATERMARK_OPACITY = getattr(settings, 'THUMBNAIL_WATERMARK_OPACITY',
-                                      1)
+THUMBNAIL_WATERMARK_ALWAYS = getattr(settings, 'THUMBNAIL_WATERMARK_ALWAYS', True)
+THUMBNAIL_WATERMARK_OPACITY = getattr(settings, 'THUMBNAIL_WATERMARK_OPACITY', 1)
 assert 0 <= THUMBNAIL_WATERMARK_OPACITY <= 1 # TODO: raise a ValueError here?
 
 THUMBNAIL_WATERMARK_SIZE = getattr(settings, 'THUMBNAIL_WATERMARK_SIZE', False)
@@ -50,17 +48,14 @@ class WatermarkEngineBase(ThumbnailEngineBase):
         if not 'watermark_alpha' in options:
             options['watermark_alpha'] = THUMBNAIL_WATERMARK_OPACITY
 
-        if not 'watermark_size' in options and THUMBNAIL_WATERMARK_SIZE:
-            options['watermark_size'] = THUMBNAIL_WATERMARK_SIZE
-        elif 'watermark_size' in options:
+        if 'watermark_size' in options or THUMBNAIL_WATERMARK_SIZE:
+            mark_sizes = options.get('watermark_size', THUMBNAIL_WATERMARK_SIZE)
             options['watermark_size'] = parse_geometry(
-                                            options['watermark_size'],
-                                            self.get_image_ratio(image),
-                                        )
+                                            mark_sizes,
+                                            self.get_image_ratio(image))
         else:
             options['watermark_size'] = False
 
-        # Position added
         if not 'watermark_pos' in options:
             options['watermark_pos'] = THUMBNAIL_WATERMARK_POSITION or 'south east'
 
