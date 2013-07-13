@@ -44,9 +44,9 @@ class Engine(WatermarkEngineBase, PILEngine):
             mark_size = map(lambda coord: int(coord*size), mark_default_size)
             # TODO: Might be useful to expose the crop/upscale options
             #       to django settings
-      #  else:
-            # Or better to raise exception here?
-       #     mark_size = mark_default_size
+        else:
+            # Or it`s better to raise exception here?
+            mark_size = mark_default_size
         return mark_size
 
     def _reduce_opacity(self, image, opacity):
