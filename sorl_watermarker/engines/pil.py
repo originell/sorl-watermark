@@ -63,8 +63,7 @@ class Engine(WatermarkEngineBase, PILEngine):
         coords = {'x': {'west': 0,
                         'east': im_size[0] - mark_size[0]},
                   'y': {'north': 0,
-                        'south': im_size[1] - mark_size[1]},
-                  }
+                        'south': im_size[1] - mark_size[1]}, }
         # if values can be parsed as numeric
         try:
             x_abs = int(pos_list[0])
