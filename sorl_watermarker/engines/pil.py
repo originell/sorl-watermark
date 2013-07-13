@@ -14,8 +14,7 @@ class Engine(WatermarkEngineBase, PILEngine):
 
     # the following is heavily copied from
     # http://code.activestate.com/recipes/362879-watermark-with-pil/
-    def _watermark(self, image, watermark_path, opacity, size, position_str): #, position):
-                   #mark_width, mark_height):
+    def _watermark(self, image, watermark_path, opacity, size, position_str):
         watermark = self.get_image(open(watermark_path))
         if opacity < 1:
             watermark = self._reduce_opacity(watermark, opacity)
@@ -23,28 +22,31 @@ class Engine(WatermarkEngineBase, PILEngine):
             image = image.convert('RGBA')
         # create a transparent layer the size of the image and draw the
         # watermark in that layer.
-        im_size = image.size
-        mark_size = watermark.size
-        if size:
-            mark_size = self._get_new_size(size, mark_size)
+        if not size:
+            mark_size = watermark.size
+        else:
+            mark_size = self._get_new_size(size, watermark.size)
             watermark = self.scale(watermark, mark_size, {'crop': 'center',
                                                           'upscale': False})
-        layer = Image.new('RGBA', im_size, (0,0,0,0))
-        position = self._define_position(position_str, im_size, mark_size)
+        layer = Image.new('RGBA', image.size, (0,0,0,0))
+        position = self._define_position(position_str, image.size, mark_size)
         layer.paste(watermark, position)
         return Image.composite(layer, image, layer)
 
-    def _get_new_size(self, size, mark_size):
+    def _get_new_size(self, size, mark_default_size):
         # TODO: It may be worth to make an ability to set
-        # mark persentage as a tuple too, like (20%,20%)
-        if hasattr(size, '__getitem__'):
+        # persentage as a tuple too, like (20%,20%)
+        if isinstance(size, tuple):
             # a tuple or any iterable already
             mark_size = size
-        else:
+        elif isinstance(size, float):
             # percentages hopefully
-            mark_size = map(lambda coord: coord*size, mark_size)
-            # TODO: Might be useful to expose the crop/upscalce options
+            mark_size = map(lambda coord: int(coord*size), mark_default_size)
+            # TODO: Might be useful to expose the crop/upscale options
             #       to django settings
+      #  else:
+            # Or better to raise exception here?
+       #     mark_size = mark_default_size
         return mark_size
 
     def _reduce_opacity(self, image, opacity):
@@ -62,7 +64,7 @@ class Engine(WatermarkEngineBase, PILEngine):
         coords = {'x': {'west': 0,
                         'east': im_size[0] - mark_size[0]},
                   'y': {'north': 0,
-                        'south': im_size[1] - mark_size[1]},}
+                        'south': im_size[1] - mark_size[1]}}
         # if values can be parsed as numeric
         try:
             x_abs = int(pos_list[0])
