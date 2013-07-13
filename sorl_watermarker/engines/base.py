@@ -49,10 +49,7 @@ class WatermarkEngineBase(ThumbnailEngineBase):
             options['watermark_alpha'] = THUMBNAIL_WATERMARK_OPACITY
 
         if 'watermark_size' in options or THUMBNAIL_WATERMARK_SIZE:
-            if not 'watermark_size' in options:
-                mark_sizes = THUMBNAIL_WATERMARK_SIZE
-            else:
-                mark_sizes = options['watermark_size']
+            mark_sizes = options.get('watermark_size', THUMBNAIL_WATERMARK_SIZE)
             options['watermark_size'] = parse_geometry(
                                             mark_sizes,
                                             self.get_image_ratio(image))

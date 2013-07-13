@@ -1,5 +1,6 @@
 from sorl.thumbnail.engines.pil_engine import Engine as PILEngine
 from sorl_watermarker.engines.base import WatermarkEngineBase
+from django.core.exceptions import ImproperlyConfigured
 
 try:
     from PIL import Image, ImageEnhance
@@ -35,18 +36,16 @@ class Engine(WatermarkEngineBase, PILEngine):
 
     def _get_new_size(self, size, mark_default_size):
         # TODO: It may be worth to make an ability to set
-        # persentage as a tuple too, like (20%,20%)
-        if isinstance(size, tuple):
+        if hasattr(size, '__getitem__'):
             # a tuple or any iterable already
             mark_size = size
         elif isinstance(size, float):
-            # percentages hopefully
             mark_size = map(lambda coord: int(coord*size), mark_default_size)
             # TODO: Might be useful to expose the crop/upscale options
             #       to django settings
         else:
-            # Or it`s better to raise exception here?
-            mark_size = mark_default_size
+            raise ImproperlyConfigured('Watermark sizes must be a pair '
+                                       'of ints (in pixels) or a float')
         return mark_size
 
     def _reduce_opacity(self, image, opacity):
@@ -64,7 +63,8 @@ class Engine(WatermarkEngineBase, PILEngine):
         coords = {'x': {'west': 0,
                         'east': im_size[0] - mark_size[0]},
                   'y': {'north': 0,
-                        'south': im_size[1] - mark_size[1]}}
+                        'south': im_size[1] - mark_size[1]},
+                  }
         # if values can be parsed as numeric
         try:
             x_abs = int(pos_list[0])
