@@ -1,21 +1,11 @@
 import os
 
-from django.conf import settings
+
 from django.contrib.staticfiles.finders import find
 from sorl.thumbnail.engines.base import EngineBase as ThumbnailEngineBase
 from sorl_watermarker.parsers import parse_geometry
+from sorl_watermarker.conf import settings
 
-# TODO: Put this in it's own package, as done by sorl.thumbnail
-STATIC_ROOT = getattr(settings, 'STATIC_ROOT')
-
-THUMBNAIL_WATERMARK = getattr(settings, 'THUMBNAIL_WATERMARK', False)
-THUMBNAIL_WATERMARK_ALWAYS = getattr(settings, 'THUMBNAIL_WATERMARK_ALWAYS', True)
-THUMBNAIL_WATERMARK_OPACITY = getattr(settings, 'THUMBNAIL_WATERMARK_OPACITY', 1)
-assert 0 <= THUMBNAIL_WATERMARK_OPACITY <= 1 # TODO: raise a ValueError here?
-
-THUMBNAIL_WATERMARK_SIZE = getattr(settings, 'THUMBNAIL_WATERMARK_SIZE', False)
-
-THUMBNAIL_WATERMARK_POSITION = getattr(settings, 'THUMBNAIL_WATERMARK_POSITION', False)
 
 class WatermarkEngineBase(ThumbnailEngineBase):
     """
@@ -24,7 +14,7 @@ class WatermarkEngineBase(ThumbnailEngineBase):
     def create(self, image, geometry, options):
         image = super(WatermarkEngineBase, self).create(image, geometry,
                                                         options)
-        if (THUMBNAIL_WATERMARK_ALWAYS or
+        if (settings.THUMBNAIL_WATERMARK_ALWAYS or
                 'watermark'       in options or
                 'watermark_pos'   in options or
                 'watermark_size'  in options or
@@ -38,18 +28,19 @@ class WatermarkEngineBase(ThumbnailEngineBase):
 
         Takes care of all the options handling.
         """
-        watermark_img = options.get('watermark', THUMBNAIL_WATERMARK)
+        watermark_img = options.get('watermark', settings.THUMBNAIL_WATERMARK)
 
         if not watermark_img:
             raise AttributeError('Trying to apply a watermark, '
-                                 'however no THUMBNAIL_WATERMARK defined, and watermark not set on tag')
+                                 'however no THUMBNAIL_WATERMARK defined, '
+                                 'and watermark not set on tag')
         watermark_path = find(watermark_img)
 
         if not 'watermark_alpha' in options:
-            options['watermark_alpha'] = THUMBNAIL_WATERMARK_OPACITY
+            options['watermark_alpha'] = settings.THUMBNAIL_WATERMARK_OPACITY
 
-        if 'watermark_size' in options or THUMBNAIL_WATERMARK_SIZE:
-            mark_sizes = options.get('watermark_size', THUMBNAIL_WATERMARK_SIZE)
+        if 'watermark_size' in options or settings.THUMBNAIL_WATERMARK_SIZE:
+            mark_sizes = options.get('watermark_size', settings.THUMBNAIL_WATERMARK_SIZE)
             options['watermark_size'] = parse_geometry(
                                             mark_sizes,
                                             self.get_image_ratio(image))
@@ -57,7 +48,7 @@ class WatermarkEngineBase(ThumbnailEngineBase):
             options['watermark_size'] = False
 
         if not 'watermark_pos' in options:
-            options['watermark_pos'] = THUMBNAIL_WATERMARK_POSITION or 'south east'
+            options['watermark_pos'] = settings.THUMBNAIL_WATERMARK_POSITION or 'south east'
 
 
         return self._watermark(image, watermark_path,

@@ -27,8 +27,9 @@ class Engine(WatermarkEngineBase, PILEngine):
             mark_size = watermark.size
         else:
             mark_size = self._get_new_size(size, watermark.size)
-            watermark = self.scale(watermark, mark_size, {'crop': 'center',
-                                                          'upscale': False})
+            options = {'crop': 'center',
+                       'upscale': False}
+            watermark = self.scale(watermark, mark_size, options)
         layer = Image.new('RGBA', image.size, (0,0,0,0))
         position = self._define_position(position_str, image.size, mark_size)
         layer.paste(watermark, position)
@@ -45,7 +46,7 @@ class Engine(WatermarkEngineBase, PILEngine):
             #       to django settings
         else:
             raise ImproperlyConfigured('Watermark sizes must be a pair '
-                                       'of ints (in pixels) or a float')
+                                       'of integers or a float number')
         return mark_size
 
     def _reduce_opacity(self, image, opacity):
