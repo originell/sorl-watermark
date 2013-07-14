@@ -12,4 +12,4 @@ if not 0 <= THUMBNAIL_WATERMARK_OPACITY <= 1: # if not float returns False too
 # assert 0 <= THUMBNAIL_WATERMARK_OPACITY <= 1, # TODO: raise a ValueError here?
 # if AssertionError raise ImproperlyConfigured
 THUMBNAIL_WATERMARK_SIZE = getattr(settings, 'THUMBNAIL_WATERMARK_SIZE', False)
-THUMBNAIL_WATERMARK_POSITION = getattr(settings, 'THUMBNAIL_WATERMARK_POSITION', False)
+THUMBNAIL_WATERMARK_POSITION = getattr(settings, 'THUMBNAIL_WATERMARK_POSITION', 'south east')

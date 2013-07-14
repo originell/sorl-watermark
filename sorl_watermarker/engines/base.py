@@ -48,7 +48,7 @@ class WatermarkEngineBase(ThumbnailEngineBase):
             options['watermark_size'] = False
 
         if not 'watermark_pos' in options:
-            options['watermark_pos'] = settings.THUMBNAIL_WATERMARK_POSITION or 'south east'
+            options['watermark_pos'] = settings.THUMBNAIL_WATERMARK_POSITION
 
 
         return self._watermark(image, watermark_path,
