@@ -30,6 +30,7 @@ class Engine(WatermarkEngineBase, PILEngine):
             options = {'crop': 'center',
                        'upscale': False}
             watermark = self.scale(watermark, mark_size, options)
+            watermark = self.crop(watermark, mark_size, options)
         layer = Image.new('RGBA', image.size, (0,0,0,0))
         position = self._define_position(position_str, image.size, mark_size)
         layer.paste(watermark, position)
