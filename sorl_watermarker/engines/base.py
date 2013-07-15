@@ -59,6 +59,14 @@ class WatermarkEngineBase(ThumbnailEngineBase):
                                options['watermark_pos'])
 
 
+    def _watermark(self, image, watermark_path, opacity, size, position_str):
+        """
+        Returns a combined thumbnail with watermark.
+        Depends on the engine type (PIL, pgmagick, etc.)
+        """
+        raise NotImplementedError()
+
+
     def _get_watermark_size(self, size, mark_default_size):
         """
             New size can be passed as a pair of valuer (tuple) or
