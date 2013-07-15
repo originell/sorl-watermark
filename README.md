@@ -22,10 +22,16 @@ by installing it via `pip`:
     pip install sorl_watermarker
 
 Change sorl's thumbnail engine to the fitting one from sorl-watermark.
-See _Engines_ for all available engines. Here is an example using the PIL
-engine.
+By now PIL and pgmagick engines are implemented.
 
-    THUMBNAIL_ENGINE = 'sorl_watermarker.engines.pil.Engine'
+PIL:
+
+    THUMBNAIL_ENGINE = 'sorl_watermarker.engines.pil_engine.Engine'
+
+Pgmagick:
+
+    THUMBNAIL_ENGINE = 'sorl_watermarker.engines.pgmagick_engine.Engine'
+
 
 Next up you tell it which image should be used as a watermark. Note that this
 file has to live somewhere inside STATIC\_ROOT.

@@ -29,8 +29,6 @@ class Engine(WatermarkEngineBase, MagickEngine):
         return image
 
 
-
-
     def _reduce_opacity(self, watermark, opacity):
         """
         Creating the Opacity channel if RGB
