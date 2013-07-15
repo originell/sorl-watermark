@@ -1,6 +1,6 @@
 from sorl.thumbnail.engines.pil_engine import Engine as PILEngine
 from sorl_watermarker.engines.base import WatermarkEngineBase
-from django.core.exceptions import ImproperlyConfigured
+
 
 try:
     from PIL import Image, ImageEnhance
@@ -18,7 +18,7 @@ class Engine(WatermarkEngineBase, PILEngine):
     def _watermark(self, image, watermark_path, opacity, size, position_str):
         watermark = self.get_image(open(watermark_path))
         if opacity < 1:
-            watermark = self._reduce_watermark_opacity(watermark, opacity)
+            watermark = self._reduce_opacity(watermark, opacity)
         if image.mode != 'RGBA':
             image = image.convert('RGBA')
         # create a transparent layer the size of the image and draw the
@@ -26,7 +26,7 @@ class Engine(WatermarkEngineBase, PILEngine):
         if not size:
             mark_size = watermark.size
         else:
-            mark_size = self._get_watermark_size(size, watermark.size)
+            mark_size = self._get_new_watermark_size(size, watermark.size)
             options = {'crop': 'center',
                        'upscale': False}
             watermark = self.scale(watermark, mark_size, options)
@@ -37,7 +37,7 @@ class Engine(WatermarkEngineBase, PILEngine):
         return Image.composite(layer, image, layer)
 
 
-    def _reduce_watermark_opacity(self, image, opacity):
+    def _reduce_opacity(self, image, opacity):
         if image.mode != 'RGBA':
             image = image.convert('RGBA')
         else:

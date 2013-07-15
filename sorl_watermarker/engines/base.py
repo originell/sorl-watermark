@@ -67,10 +67,10 @@ class WatermarkEngineBase(ThumbnailEngineBase):
         raise NotImplementedError()
 
 
-    def _get_watermark_size(self, size, mark_default_size):
+    def _get_new_watermark_size(self, size, mark_default_size):
         """
-            New size can be passed as a pair of valuer (tuple) or
-            a float (persentage case)
+        New size can be passed as a pair of valuer (tuple) or
+        a fsloat (persentage case)
         """
         if hasattr(size, '__getitem__'):
             # a tuple or any iterable already
