@@ -31,6 +31,8 @@ class Engine(WatermarkEngineBase, MagickEngine):
 
     def _reduce_opacity(self, watermark, opacity):
         """
+        Returns a image with the reduced opacity
+
         Creating the Opacity channel if RGB
         simple watermark.opacity(65535 - int(65535 * opacity) would not work for
         images with the Opacity channel (RGBA images). So we have to convert RGB or any
@@ -41,4 +43,3 @@ class Engine(WatermarkEngineBase, MagickEngine):
             watermark.type(ImageType.TrueColorMatteType)
         depth = 255 - int(255 * opacity)
         watermark.quantumOperator(ChannelType.OpacityChannel,QuOp.MaxQuantumOp, depth)
-        # watermark.transparent('transparent')

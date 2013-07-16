@@ -61,8 +61,9 @@ class WatermarkEngineBase(ThumbnailEngineBase):
 
     def _watermark(self, image, watermark_path, opacity, size, position_str):
         """
-        Returns a combined thumbnail with watermark.
-        Depends on the engine type (PIL, pgmagick, etc.)
+        Returns a combined thumbnail with a imposed watermark
+
+        Implemented by the used engine.
         """
         raise NotImplementedError()
 
