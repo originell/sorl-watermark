@@ -31,10 +31,9 @@ class Engine(WatermarkEngineBase, MagickEngine):
 
     def _reduce_opacity(self, watermark, opacity):
         """
-        Returns a image with the reduced opacity
+        Returns an image with reduced opacity. Converts image to RGBA if needs.
 
-        Creating the Opacity channel if RGB
-        simple watermark.opacity(65535 - int(65535 * opacity) would not work for
+        Simple watermark.opacity(65535 - int(65535 * opacity) would not work for
         images with the Opacity channel (RGBA images). So we have to convert RGB or any
         other type to RGBA in this case
         """
