@@ -1,12 +1,22 @@
-from django.conf import settings
-from django.core.exceptions import ImproperlyConfigured
 
-STATIC_ROOT = getattr(settings, 'STATIC_ROOT')
-THUMBNAIL_WATERMARK = getattr(settings, 'THUMBNAIL_WATERMARK', False)
-THUMBNAIL_WATERMARK_ALWAYS = getattr(settings, 'THUMBNAIL_WATERMARK_ALWAYS', True)
-THUMBNAIL_WATERMARK_OPACITY = getattr(settings, 'THUMBNAIL_WATERMARK_OPACITY', 1)
-# should we do this here? If yes, we have to check every value
-if not 0 < THUMBNAIL_WATERMARK_OPACITY <= 1:
-    raise ImproperlyConfigured
-THUMBNAIL_WATERMARK_SIZE = getattr(settings, 'THUMBNAIL_WATERMARK_SIZE', False)
-THUMBNAIL_WATERMARK_POSITION = getattr(settings, 'THUMBNAIL_WATERMARK_POSITION', 'south east')
+# Avaliabe engines:
+# sorl_watermarker.engines.pil_engine.Engine
+# sorl_watermarker.engines.pgmagick_engine.Engine
+THUMBNAIL_ENGINE = 'sorl_watermarker.engines.pil_engine.Engine'
+
+# Watermark image
+THUMBNAIL_WATERMARK = False
+
+# Put a watermark on the every {% thumbnail image %} found in templates
+THUMBNAIL_WATERMARK_ALWAYS = True
+
+# Watermark opacity: 0(fully transparent) < opacity(float) <= 1(opaque)
+THUMBNAIL_WATERMARK_OPACITY = 1
+
+# Watermark size. If not set, displayed sizes are equal
+# to the original watermark image sizes
+THUMBNAIL_WATERMARK_SIZE = False
+
+# Watermark position on the initial image.
+# By default places the watermark in the right bottom corner.
+THUMBNAIL_WATERMARK_POSITION = 'south east'
