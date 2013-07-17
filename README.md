@@ -24,7 +24,7 @@ by installing it via `pip`:
 Change sorl's thumbnail engine to the fitting one from sorl-watermark.
 By now PIL and pgmagick engines are implemented.
 
-PIL:
+PIL (default one):
 
     THUMBNAIL_ENGINE = 'sorl_watermarker.engines.pil_engine.Engine'
 
