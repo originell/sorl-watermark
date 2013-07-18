@@ -1,9 +1,4 @@
 
-# Avaliabe engines:
-# sorl_watermarker.engines.pil_engine.Engine
-# sorl_watermarker.engines.pgmagick_engine.Engine
-THUMBNAIL_ENGINE = 'sorl_watermarker.engines.pil_engine.Engine'
-
 # Watermark image
 THUMBNAIL_WATERMARK = False
 
