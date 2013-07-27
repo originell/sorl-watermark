@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# coding: utf-8
+# author: v.bazhin@gmail.com
 
 from django.conf import settings
 import unittest
@@ -18,12 +19,12 @@ class PILTestCase(unittest.TestCase):
         self.engine = PILEngine()
         self.img_dir = 'src/control_instances/pngs/'
 
-    def get_pixels_list(self, image, denom=1000):
+    def get_pixels_list(self, image, denominator=1000):
         if image.mode != 'RGBA':
             image = image.convert('RGBA')
         image_pixels = list(image.getdata())
         short_list = [pixel for loop, pixel in enumerate(image_pixels)
-                      if loop%denom == 0]
+                      if loop%denominator == 0]
         return short_list
 
     def verify_watermark(self, option='watermark_pos', value='default'):
