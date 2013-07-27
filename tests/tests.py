@@ -37,7 +37,6 @@ class PILTestCase(unittest.TestCase):
         mark = self.engine.watermark(self.bg, options)
         self.assertEqual(self.get_pixels_list(mark), self.get_pixels_list(pre_image))
 
-
     def test_position(self):
         self.verify_watermark()
         self.verify_watermark(value='center')
@@ -50,7 +49,6 @@ class PILTestCase(unittest.TestCase):
         self.verify_watermark(value='-50 -50')
         self.verify_watermark(value='-50 50')
 
-
     def test_opacity(self):
         self.verify_watermark(option='watermark_alpha', value=1)
         self.verify_watermark(option='watermark_alpha', value=0.75)
@@ -60,6 +58,8 @@ class PILTestCase(unittest.TestCase):
         self.verify_watermark(option='watermark_size', value="100%")
         self.verify_watermark(option='watermark_size', value="75%")
         self.verify_watermark(option='watermark_size', value="50%")
+        self.verify_watermark(option='watermark_size', value="100x100")
+
 
 if __name__ == '__main__':
     unittest.main()
