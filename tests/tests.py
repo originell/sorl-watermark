@@ -1,11 +1,8 @@
 # -*- coding: utf-8 -*-
 
-
-import os, sys
 from django.conf import settings
 import unittest
 from PIL import Image as PILImage
-from pgmagick import Image as PGImage
 
 settings.configure(THUMBNAIL_WATERMARK = 'mark.png',
                    STATICFILES_DIRS = ('src/', ), )
@@ -26,13 +23,8 @@ class PILTestCase(unittest.TestCase):
         if image.mode != 'RGBA':
             image = image.convert('RGBA')
         image_pixels = list(image.getdata())
-        # short_list = [i for i in image_pixels if image_pixels.index(i)%denom == 0]
-        short_list = list()
-        n = 0
-        for i in image_pixels:
-            n += 1
-            if n%denom == 0:
-                short_list += [i]
+        short_list = [pixel for loop, pixel in enumerate(image_pixels)
+                      if loop%denom == 0]
         return short_list
 
     def position(self, position='default'):
