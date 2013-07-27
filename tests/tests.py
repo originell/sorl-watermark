@@ -28,7 +28,7 @@ class PILTestCase(unittest.TestCase):
         return short_list
 
     def verify_watermark(self, option='watermark_pos', value='default'):
-        print 'Testing position: ' + str(value)
+        print 'Testing ' + option + ': ' + str(value)
         pre_image = PILImage.open(self.img_dir + option + '/' + str(value) + '.png')
         if value == 'default':
             options = dict()
