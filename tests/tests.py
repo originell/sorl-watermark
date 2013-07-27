@@ -11,13 +11,12 @@ settings.configure(THUMBNAIL_WATERMARK = 'mark.png',
 from sorl_watermarker.engines.pil_engine import Engine as PILEngine
 
 
-
 class PILTestCase(unittest.TestCase):
 
     def setUp(self):
         self.bg = PILImage.open('src/bg.png')
         self.engine = PILEngine()
-        self.img_dir = 'src/control_instances/pngs/watermark_pos/'
+        self.img_dir = 'src/control_instances/pngs/'
 
     def get_pixels_list(self, image, denom=1000):
         if image.mode != 'RGBA':
@@ -27,28 +26,39 @@ class PILTestCase(unittest.TestCase):
                       if loop%denom == 0]
         return short_list
 
-    def position(self, position='default'):
-        print 'Testing position: ' + position
-        pre_image = PILImage.open(self.img_dir + position + '.png')
-        if position == 'default':
+    def verify_watermark(self, option='watermark_pos', value='default'):
+        print 'Testing position: ' + str(value)
+        pre_image = PILImage.open(self.img_dir + option + '/' + str(value) + '.png')
+        if value == 'default':
             options = dict()
         else:
-            options = {'watermark_pos': position}
+            options = {option: value}
         mark = self.engine.watermark(self.bg, options)
         self.assertEqual(self.get_pixels_list(mark), self.get_pixels_list(pre_image))
 
 
-    def runTest(self):
-        self.position()
-        self.position('center')
-        self.position('south east')
-        self.position('south west')
-        self.position('north east')
-        self.position('north west')
-        self.position('50 50')
-        self.position('50 -50')
-        self.position('-50 -50')
-        self.position('-50 50')
+    def test_position(self):
+        self.verify_watermark()
+        self.verify_watermark(value='center')
+        self.verify_watermark(value='south east')
+        self.verify_watermark(value='south west')
+        self.verify_watermark(value='north east')
+        self.verify_watermark(value='north west')
+        self.verify_watermark(value='50 50')
+        self.verify_watermark(value='50 -50')
+        self.verify_watermark(value='-50 -50')
+        self.verify_watermark(value='-50 50')
+
+
+    def test_opacity(self):
+        self.verify_watermark(option='watermark_alpha', value=1)
+        self.verify_watermark(option='watermark_alpha', value=0.75)
+        self.verify_watermark(option='watermark_alpha', value=0.5)
+
+    def test_size(self):
+        self.verify_watermark(option='watermark_size', value="100%")
+        self.verify_watermark(option='watermark_size', value="75%")
+        self.verify_watermark(option='watermark_size', value="50%")
 
 if __name__ == '__main__':
     unittest.main()
