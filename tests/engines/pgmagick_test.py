@@ -19,8 +19,8 @@ class PGmagickTestCase(unittest.TestCase, BaseCase):
     def get_comparable_image(self, options):
         bg = PGImage(self.bg_path)
         marked_image = self.engine.watermark(bg, options)
-        marked_image.write(self.temp_path + str(options.keys()[0]) + str(options.values()[0]) + '.png')
-        mark = PILImage.open(self.temp_path + str(options.keys()[0]) + str(options.values()[0]) + '.png')
+        marked_image.write(self.temp_path + 'temp.png')
+        mark = PILImage.open(self.temp_path + 'temp.png')
         return mark
 
 
