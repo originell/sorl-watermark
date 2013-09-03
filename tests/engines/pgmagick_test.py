@@ -1,10 +1,10 @@
 # coding: utf-8
 # author: v.bazhin@gmail.com
 
+from base_case import BaseCase
 from sorl_watermarker.engines.pgmagick_engine import Engine as PGEngine
 from pgmagick import Image as PGImage
 from PIL import Image as PILImage
-from base_case import BaseCase
 import unittest
 import os
 
@@ -37,15 +37,12 @@ class PGmagickTestCase(unittest.TestCase, BaseCase):
 
 
     def tearDown(self):
-        """
-        Removing the temp folder after testing
-        """
         if os.path.exists(self.temp_dir):
             os.rmdir(self.temp_dir)
 
 
 
-def suite():
+def pgmagick_test_suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(PGmagickTestCase, 'test'))
     return suite

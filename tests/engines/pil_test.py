@@ -1,9 +1,9 @@
 # coding: utf-8
 # author: v.bazhin@gmail.com
 
+from base_case import BaseCase
 from sorl_watermarker.engines.pil_engine import Engine as PILEngine
 from PIL import Image as PILImage
-from base_case import BaseCase
 import unittest
 
 
@@ -24,7 +24,7 @@ class PILTestCase(unittest.TestCase, BaseCase):
         return mark
 
 
-def suite():
+def pil_test_suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(PILTestCase, 'test'))
     return suite
