@@ -1,11 +1,6 @@
-# coding: utf-8
-# author: v.bazhin@gmail.com
-
+from engines import pil_test, pgmagick_test
 import unittest
 
-
-
-from engines import pil_test, pgmagick_test
 
 def suite():
     suite = unittest.TestSuite()
