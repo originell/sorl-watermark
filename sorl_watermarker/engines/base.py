@@ -43,9 +43,13 @@ class WatermarkEngineBase(ThumbnailEngineBase):
 
         if 'watermark_size' in options or settings.THUMBNAIL_WATERMARK_SIZE:
             mark_sizes = options.get('watermark_size', settings.THUMBNAIL_WATERMARK_SIZE)
+            try:
+                ratio = self.get_image_ratio(image)
+            except TypeError as e:
+                ratio = self.get_image_ratio(image, {'cropbox': None})
             options['watermark_size'] = parse_geometry(
                                             mark_sizes,
-                                            self.get_image_ratio(image))
+                                            ratio)
         else:
             options['watermark_size'] = False
 
