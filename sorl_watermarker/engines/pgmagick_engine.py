@@ -22,9 +22,13 @@ class Engine(WatermarkEngineBase, MagickEngine):
                        'upscale': False}
             watermark = self.scale(watermark, mark_size, options)
             watermark = self.crop(watermark, mark_size, options)
-
-        position = self._define_watermark_position(position_str, image_size, mark_size)
-        layer.composite(watermark, position[0], position[1], CoOp.OverCompositeOp)
+        if position_str == 'tile':
+            for x_pos in range(0, image_size[0], mark_size[0]):
+                for y_pos in range (0, image_size[1], mark_size[1]):
+                    layer.composite(watermark, x_pos, y_pos, CoOp.OverCompositeOp)
+        else:
+            position = self._define_watermark_position(position_str, image_size, mark_size)
+            layer.composite(watermark, position[0], position[1], CoOp.OverCompositeOp)
         image.composite(layer, 0, 0, CoOp.OverCompositeOp)
         return image
 
