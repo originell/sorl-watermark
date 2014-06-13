@@ -107,6 +107,9 @@ The following settings are available
       * "south west"
       * "center"
 
+  If you want to tile your image completely with a watermark, you should set
+  * THUMBNAIL_WATERMARK_POSITION = 'tile'
+
   or with a pair of values in pixels ("20 20" would place watermark near the left-top corner,
   "-20 -20" - near the right-bottom corner).  
   Default: `"south east"`
