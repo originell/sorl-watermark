@@ -32,8 +32,13 @@ class Engine(WatermarkEngineBase, PILEngine):
             watermark = self.scale(watermark, mark_size, options)
             watermark = self.crop(watermark, mark_size, options)
         layer = Image.new('RGBA', image.size, (0,0,0,0))
-        position = self._define_watermark_position(position_str, image.size, mark_size)
-        layer.paste(watermark, position)
+        if position_str == 'tile':
+            for x_pos in range(0, image.size[0], watermark.size[0]):
+                for y_pos in range (0, image.size[1], watermark.size[1]):
+                    layer.paste(watermark, (x_pos, y_pos))
+        else:
+            position = self._define_watermark_position(position_str, image.size, mark_size)
+            layer.paste(watermark, position)
         return Image.composite(layer, image, layer)
 
 
