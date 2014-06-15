@@ -47,10 +47,8 @@ class WatermarkEngineBase(ThumbnailEngineBase):
         if 'watermark_size' in options or settings.THUMBNAIL_WATERMARK_SIZE:
             mark_sizes = options.get('watermark_size', settings.THUMBNAIL_WATERMARK_SIZE)
             get_image_ratio_args = [image]
-            # For version sorl-thumbnail 11.12+
-            # (self.get_image_ratio accepts 3 args in 11.12+)
-            get_image_ratio_args_number = len(inspect.getargspec(self.get_image_ratio)[0])
-            if get_image_ratio_args_number == 3:
+            # For version sorl-thumbnail 11.12+ (self.get_image_ratio accepts 3 args in 11.12+)
+            if 'options' in inspect.getargspec(self.get_image_ratio)[0]:
                 get_image_ratio_args.append(options)
             options['watermark_size'] = parse_geometry(
                                 mark_sizes,
