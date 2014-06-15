@@ -6,6 +6,7 @@ from sorl.thumbnail.engines.base import EngineBase as ThumbnailEngineBase
 from sorl_watermarker.parsers import parse_geometry
 from sorl_watermarker.conf import settings
 from django.core.exceptions import ImproperlyConfigured
+import inspect
 
 class WatermarkEngineBase(ThumbnailEngineBase):
     """
@@ -38,14 +39,22 @@ class WatermarkEngineBase(ThumbnailEngineBase):
                                  'and watermark not set on tag')
         watermark_path = find(watermark_img)
 
+        if not 'cropbox' in options:
+            options['cropbox'] = None
         if not 'watermark_alpha' in options:
             options['watermark_alpha'] = settings.THUMBNAIL_WATERMARK_OPACITY
 
         if 'watermark_size' in options or settings.THUMBNAIL_WATERMARK_SIZE:
             mark_sizes = options.get('watermark_size', settings.THUMBNAIL_WATERMARK_SIZE)
+            get_image_ratio_args = [image]
+            # For version sorl-thumbnail 11.12+
+            # (self.get_image_ratio accepts 3 args in 11.12+)
+            get_image_ratio_args_number = len(inspect.getargspec(self.get_image_ratio)[0])
+            if get_image_ratio_args_number == 3:
+                get_image_ratio_args.append(options)
             options['watermark_size'] = parse_geometry(
-                                            mark_sizes,
-                                            self.get_image_ratio(image))
+                                mark_sizes,
+                                self.get_image_ratio(*get_image_ratio_args))
         else:
             options['watermark_size'] = False
 
