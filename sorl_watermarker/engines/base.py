@@ -1,12 +1,8 @@
-import os
-
-
 from django.contrib.staticfiles.finders import find
 from sorl.thumbnail.engines.base import EngineBase as ThumbnailEngineBase
 from sorl_watermarker.parsers import parse_geometry
 from sorl_watermarker.conf import settings
 from django.core.exceptions import ImproperlyConfigured
-import inspect
 
 class WatermarkEngineBase(ThumbnailEngineBase):
     """
