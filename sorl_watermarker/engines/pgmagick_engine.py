@@ -8,7 +8,7 @@ class Engine(WatermarkEngineBase, MagickEngine):
     """
     PGMagick based engine with watermark support.
     """
-    def _watermark(self, image, watermark_path, opacity, size, position_str, upscale=False):
+    def _watermark(self, image, watermark_path, opacity, size, position_str):
         watermark = self.get_image(open(watermark_path))
         image_size = self.get_image_size(image)
         layer = Image(Geometry(image_size[0], image_size[1]), 'transparent')
