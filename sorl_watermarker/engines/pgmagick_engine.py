@@ -8,7 +8,7 @@ class Engine(WatermarkEngineBase, MagickEngine):
     """
     PGMagick based engine with watermark support.
     """
-    def _watermark(self, image, watermark_path, opacity, size, position_str):
+    def _watermark(self, image, watermark_path, opacity, size, position_str, upscale=False):
         watermark = self.get_image(open(watermark_path))
         image_size = self.get_image_size(image)
         layer = Image(Geometry(image_size[0], image_size[1]), 'transparent')
@@ -17,9 +17,9 @@ class Engine(WatermarkEngineBase, MagickEngine):
         if not size:
             mark_size = self.get_image_size(watermark)
         else:
-            mark_size = self._get_new_watermark_size(size, self.get_image_size(watermark))
+            mark_size = tuple(self._get_new_watermark_size(size, self.get_image_size(watermark)))
             options = {'crop': 'center',
-                       'upscale': False}
+                       'upscale': mark_size > self.get_image_size(watermark)}
             watermark = self.scale(watermark, mark_size, options)
             watermark = self.crop(watermark, mark_size, options)
         if position_str == 'tile':
