@@ -70,4 +70,5 @@ class BaseCase(object):
         self.verify_watermark(option='watermark_size', value="100%")
         self.verify_watermark(option='watermark_size', value="75%")
         self.verify_watermark(option='watermark_size', value="50%")
+        self.verify_watermark(option='watermark_size', value="200%")
         self.verify_watermark(option='watermark_size', value="100x100")

@@ -67,18 +67,19 @@ class WatermarkEngineBase(ThumbnailEngineBase):
                                  'and watermark not set on tag')
         watermark_path = find(watermark_img)
 
+        if not 'cropbox' in options:
+            options['cropbox'] = None
         if not 'watermark_alpha' in options:
             options['watermark_alpha'] = settings.THUMBNAIL_WATERMARK_OPACITY
 
         if 'watermark_size' in options or settings.THUMBNAIL_WATERMARK_SIZE:
             mark_sizes = options.get('watermark_size', settings.THUMBNAIL_WATERMARK_SIZE)
             try:
-                ratio = self.get_image_ratio(image)
-            except TypeError as e:
-                ratio = self.get_image_ratio(image, {'cropbox': None})
-            options['watermark_size'] = parse_geometry(
-                                            mark_sizes,
-                                            ratio)
+                options['watermark_size'] = parse_geometry(
+                                    mark_sizes,
+                                    self.get_image_ratio(image, options))
+            except TypeError, e:
+                raise TypeError('Please, update sorl-thumbnail package version to  >= 11.12b. %s' % e)
         else:
             options['watermark_size'] = False
 
