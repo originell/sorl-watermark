@@ -1,5 +1,5 @@
 import os
-
+from functools import wraps
 
 from django.contrib.staticfiles.finders import find
 from sorl.thumbnail.engines.base import EngineBase as ThumbnailEngineBase
@@ -7,11 +7,32 @@ from sorl_watermarker.parsers import parse_geometry
 from sorl_watermarker.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 
+
+def handle_padding(fn):
+    @wraps(fn)
+    def wrapped(self, image, geometry, options):
+        # remove padding option, add it later
+        padding = False
+        if options.get('padding') and self.get_image_size(image) != geometry:
+            padding = options['padding']
+            options['padding'] = False
+
+        image = fn(self, image, geometry, options)
+
+        # add padding after watermark
+        if padding and self.get_image_size(image) != geometry:
+            options['padding'] = padding
+            image = self.padding(image, geometry, options)
+        return image
+    return wrapped
+
+
 class WatermarkEngineBase(ThumbnailEngineBase):
     """
     Extend sorl.thumbnail base engine to support watermarks.
     """
 
+    @handle_padding
     def create(self, image, geometry, options):
         image = super(WatermarkEngineBase, self).create(image, geometry,
                                                         options)
