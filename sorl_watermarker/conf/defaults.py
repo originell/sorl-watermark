@@ -15,3 +15,6 @@ THUMBNAIL_WATERMARK_SIZE = False
 # Watermark position on the initial image.
 # By default places the watermark in the right bottom corner.
 THUMBNAIL_WATERMARK_POSITION = 'south east'
+
+# Add watermark before applying padding
+THUMBNAIL_WATERMARK_BEFORE_PADDING = True

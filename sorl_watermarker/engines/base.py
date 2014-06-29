@@ -9,21 +9,29 @@ from django.core.exceptions import ImproperlyConfigured
 
 
 def handle_padding(fn):
+
     @wraps(fn)
     def wrapped(self, image, geometry, options):
-        # remove padding option, add it later
-        padding = False
-        if options.get('padding') and self.get_image_size(image) != geometry:
-            padding = options['padding']
-            options['padding'] = False
+        watermark_before_padding = options.get(
+            'watermark_before_padding',
+            settings.THUMBNAIL_WATERMARK_BEFORE_PADDING
+        )
+        if watermark_before_padding:
+            padding = False
+            if options.get('padding') and self.get_image_size(image) != geometry:
+                # remove padding option, add it later
+                padding = options['padding']
+                options['padding'] = False
 
         image = fn(self, image, geometry, options)
 
-        # add padding after watermark
-        if padding and self.get_image_size(image) != geometry:
-            options['padding'] = padding
-            image = self.padding(image, geometry, options)
+        if watermark_before_padding:
+            if padding and self.get_image_size(image) != geometry:
+                # add padding after watermark
+                options['padding'] = padding
+                image = self.padding(image, geometry, options)
         return image
+
     return wrapped
 
 
