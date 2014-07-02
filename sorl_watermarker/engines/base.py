@@ -1,4 +1,3 @@
-import os
 from functools import wraps
 
 from django.contrib.staticfiles.finders import find
