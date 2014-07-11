@@ -6,6 +6,32 @@ from django.conf import settings
 settings.configure(THUMBNAIL_WATERMARK = 'mark.png',
                    STATICFILES_DIRS = ('src/', ), )
 
+POSITIONS_TO_TEST = (
+    ''
+    'center',
+    'south east',
+    'south west',
+    'north west',
+    'north east',
+    '50 50',
+    '50 -50',
+    '-50 -50',
+    '-50 50'
+)
+
+OPACITY_TO_TEST = (
+    1,
+    0.75,
+    0.5
+)
+
+SIZE_TO_TEST = (
+    "100%",
+    "75%",
+    "50%",
+    "200%",
+    "100x100"
+)
 
 class BaseCase(object):
 
@@ -32,7 +58,6 @@ class BaseCase(object):
                       if loop%denominator == 0]
         return short_list
 
-
     def verify_watermark(self, option='watermark_pos', value='default'):
         """
         Compare two rgba pixels list
@@ -46,29 +71,15 @@ class BaseCase(object):
         mark = self.get_comparable_image(options)
         self.assertEqual(self.get_pixels_list(mark), self.get_pixels_list(pre_image))
 
-
     def test_position(self):
         self.verify_watermark()
-        self.verify_watermark(value='center')
-        self.verify_watermark(value='south east')
-        self.verify_watermark(value='south west')
-        self.verify_watermark(value='north east')
-        self.verify_watermark(value='north west')
-        self.verify_watermark(value='50 50')
-        self.verify_watermark(value='50 -50')
-        self.verify_watermark(value='-50 -50')
-        self.verify_watermark(value='-50 50')
-
+        for position in POSITIONS_TO_TEST:
+            self.verify_watermark(value=position)
 
     def test_opacity(self):
-        self.verify_watermark(option='watermark_alpha', value=1)
-        self.verify_watermark(option='watermark_alpha', value=0.75)
-        self.verify_watermark(option='watermark_alpha', value=0.5)
-
+        for alpha in OPACITY_TO_TEST:
+            self.verify_watermark(option='watermark_alpha', value=alpha)
 
     def test_size(self):
-        self.verify_watermark(option='watermark_size', value="100%")
-        self.verify_watermark(option='watermark_size', value="75%")
-        self.verify_watermark(option='watermark_size', value="50%")
-        self.verify_watermark(option='watermark_size', value="200%")
-        self.verify_watermark(option='watermark_size', value="100x100")
+        for size in SIZE_TO_TEST:
+            self.verify_watermark(option='watermark_size', value=size)

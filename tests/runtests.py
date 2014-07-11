@@ -11,6 +11,3 @@ def watermark_test_suite():
 
 if __name__ == '__main__':
     unittest.main(defaultTest='watermark_test_suite')
-
-
-
