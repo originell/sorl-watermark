@@ -70,13 +70,13 @@ class WatermarkEngineBase(ThumbnailEngineBase):
             options['cropbox'] = None
         if not 'watermark_alpha' in options:
             options['watermark_alpha'] = settings.THUMBNAIL_WATERMARK_OPACITY
-
-        if 'watermark_size' in options or settings.THUMBNAIL_WATERMARK_SIZE:
-            mark_sizes = options.get('watermark_size', settings.THUMBNAIL_WATERMARK_SIZE)
+        
+        mark_sizes = options.get('watermark_size', settings.THUMBNAIL_WATERMARK_SIZE)
+        if mark_sizes:
             try:
                 options['watermark_size'] = parse_geometry(
-                                    mark_sizes,
-                                    self.get_image_ratio(image, options))
+                                            mark_sizes,
+                                            self.get_image_ratio(image, options))
             except TypeError, e:
                 raise TypeError('Please, update sorl-thumbnail package version to  >= 11.12b. %s' % e)
         else:
