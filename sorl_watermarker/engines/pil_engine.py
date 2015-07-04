@@ -1,6 +1,6 @@
 from sorl.thumbnail.engines.pil_engine import Engine as PILEngine
+from sorl.thumbnail.images import ImageFile
 from sorl_watermarker.engines.base import WatermarkEngineBase
-
 
 try:
     from PIL import Image, ImageEnhance
@@ -13,12 +13,11 @@ class Engine(WatermarkEngineBase, PILEngine):
     PIL based thumbnailing engine with watermark support.
     """
 
-    name = 'PIL'
+    name = 'PIL/Pillow'
 
-    # the following is heavily copied from
     # http://code.activestate.com/recipes/362879-watermark-with-pil/
     def _watermark(self, image, watermark_path, opacity, size, position_str):
-        watermark = self.get_image(open(watermark_path))
+        watermark = self.get_image(ImageFile(watermark_path))
         if opacity < 1:
             watermark = self._reduce_opacity(watermark, opacity)
         if image.mode != 'RGBA':
@@ -42,7 +41,6 @@ class Engine(WatermarkEngineBase, PILEngine):
             position = self._define_watermark_position(position_str, image.size, mark_size)
             layer.paste(watermark, position)
         return Image.composite(layer, image, layer)
-
 
     def _reduce_opacity(self, image, opacity):
         if image.mode != 'RGBA':
