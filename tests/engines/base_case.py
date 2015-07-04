@@ -1,10 +1,15 @@
 # coding: utf-8
 # author: v.bazhin@gmail.com
 
-from PIL import Image as PILImage
+import os
+from PIL import Image as PILImage   
 from django.conf import settings
+import unittest
+
+
 settings.configure(THUMBNAIL_WATERMARK = 'mark.png',
-                   STATICFILES_DIRS = ('src/', ), )
+                   STATICFILES_DIRS = ('src', ), )
+
 
 POSITIONS_TO_TEST = (
     ''
@@ -33,13 +38,15 @@ SIZE_TO_TEST = (
     "100x100"
 )
 
-class BaseCase(object):
 
-    def setUp(self):
+class BaseCase(unittest.TestCase):
+
+    def __init__(self, *args, **kwargs):
+        super(BaseCase, self).__init__(*args, **kwargs)
+        self.root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
+        self.img_dir = os.path.join(self.root_dir, 'src', 'control_instances', 'created_with_pil', 'png')
+        self.bg_path = os.path.join(self.root_dir, 'src', 'bg.png')
         self.engine = 'Sorl watermark engine'
-        self.bg_path = 'Watermark background image'
-        self.temp_path = 'Temporary folder for non PIL the testing images'
-        self.img_dir = 'The source of the proper images examples'
 
     def get_comparable_image(self, options):
         raise NotImplementedError('The method should return the PIL image object')
@@ -62,8 +69,17 @@ class BaseCase(object):
         """
         Compare two rgba pixels list
         """
-        print 'Testing ' + option + ': ' + str(value)
-        pre_image = PILImage.open(self.img_dir + option + '/' + str(value) + '.png')
+        print '{engine} Testing {option}: {value}'.format(
+            engine=getattr(self.engine, 'name', str()),
+            option=option,
+            value=value
+        )
+        image_path = os.path.join(
+            self.img_dir,
+            option,
+            '{}.png'.format(value)
+        )
+        pre_image = PILImage.open(image_path)
         if value == 'default':
             options = dict()
         else:

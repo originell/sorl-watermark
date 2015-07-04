@@ -5,15 +5,14 @@ from base_case import BaseCase
 from sorl_watermarker.engines.pil_engine import Engine as PILEngine
 from PIL import Image as PILImage
 import unittest
+import os
 
 
-class PILTestCase(unittest.TestCase, BaseCase):
+class PILTestCase(BaseCase):
 
-    def setUp(self):
+    def __init__(self, *args, **kwargs):
+        super(PILTestCase, self).__init__(*args, **kwargs)
         self.engine = PILEngine()
-        self.bg_path = 'src/bg.png'
-        self.img_dir = 'src/control_instances/created_with_pil/png/'
-
 
     def get_comparable_image(self, options):
         """

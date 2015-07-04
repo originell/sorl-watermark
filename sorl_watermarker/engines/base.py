@@ -39,6 +39,8 @@ class WatermarkEngineBase(ThumbnailEngineBase):
     Extend sorl.thumbnail base engine to support watermarks.
     """
 
+    name = 'BaseEngine'
+
     @handle_padding
     def create(self, image, geometry, options):
         image = super(WatermarkEngineBase, self).create(image, geometry,

@@ -13,6 +13,8 @@ class Engine(WatermarkEngineBase, PILEngine):
     PIL based thumbnailing engine with watermark support.
     """
 
+    name = 'PIL'
+
     # the following is heavily copied from
     # http://code.activestate.com/recipes/362879-watermark-with-pil/
     def _watermark(self, image, watermark_path, opacity, size, position_str):
