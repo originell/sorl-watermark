@@ -16,15 +16,13 @@ class Engine(WatermarkEngineBase, PILEngine):
 
     name = 'PIL/Pillow'
 
-
-    # http://code.activestate.com/recipes/362879-watermark-with-pil/
     def _watermark(self, image, watermark_path, opacity, size, position_str):
         # have to do this because of the confirmed pillow bug
         # to prevent resources leakage
         # https://github.com/python-pillow/Pillow/issues/835
         with open(watermark_path, 'rb') as image_file:
             with Image.open(image_file) as pil_watermark:
-                watermark = copy.deepcopy(pil_watermark)
+                watermark = pil_watermark.copy()
         if opacity < 1:
             watermark = self._reduce_opacity(watermark, opacity)
         if image.mode != 'RGBA':
@@ -53,8 +51,6 @@ class Engine(WatermarkEngineBase, PILEngine):
     def _reduce_opacity(self, image, opacity):
         if image.mode != 'RGBA':
             image = image.convert('RGBA')
-        else:
-            image = image.copy()
         alpha = image.split()[3]
         alpha = ImageEnhance.Brightness(alpha).enhance(opacity)
         image.putalpha(alpha)
