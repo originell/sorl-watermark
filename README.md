@@ -95,8 +95,8 @@ The following settings are available
   Default is `0` (opaque).
 
 * `THUMBNAIL_WATERMARK_POSITION`  
-  Specifies the position of the watermark. You can either pass this a gravity
-  like
+  Specifies the position of the watermark. You can specify the position with a pair of padding values (in pixels) Ex. "20 20" will place watermark near the left-top corner, "-20 -20" - near the right-bottom corner. 
+Either you can specify the position as:
   
       * "north"
       * "south"
@@ -108,13 +108,11 @@ The following settings are available
       * "south west"
       * "center"
 
-  If you want to tile your image completely with a watermark, you should set
+  Default: `"south east"` (right-bottom corner)
+
+  If you want to tile your image completely with a watermark, you should set:
   
       THUMBNAIL_WATERMARK_POSITION = 'tile'
 
-
-  or with a pair of values in pixels ("20 20" would place watermark near the left-top corner,
-  "-20 -20" - near the right-bottom corner).  
-  Default: `"south east"`
 
 
