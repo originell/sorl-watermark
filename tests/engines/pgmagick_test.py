@@ -2,11 +2,12 @@
 # author: v.bazhin@gmail.com
 
 from sorl_watermarker.engines.pgmagick_engine import Engine as PGEngine
-from base_case import BaseCase
+from .base_case import BaseCase
 from pgmagick import Image as PGImage
 from PIL import Image as PILImage
 import unittest
 import os
+import copy
 
 
 class PGmagickTestCase(BaseCase):
@@ -29,15 +30,18 @@ class PGmagickTestCase(BaseCase):
         bg = PGImage(self.bg_path)
         marked_image = self.engine.watermark(bg, options)
         path_kwargs = {
-            'temp_dir': self.temp_dir,
-            'option_key': str(options.keys()[0]),
-            'option_value': str(options.values()[0])
+            'option_key': str(list(options.keys())[0]),
+            'option_value': str(list(options.values())[0])
         }
-        temp_image_path = '{temp_dir}{option_key}_{option_value}.png'.format(**path_kwargs)
+        temp_image_path = os.path.join(
+            self.temp_dir,
+            '{option_key}_{option_value}.png'.format(**path_kwargs))
         marked_image.write(temp_image_path)
-        mark = PILImage.open(temp_image_path)
-        os.remove(temp_image_path)
-        return mark
+        # https://github.com/python-pillow/Pillow/issues/835
+        with open(temp_image_path, 'rb') as image_file:
+            with PILImage.open(image_file) as mark:
+                os.remove(temp_image_path)
+                return copy.deepcopy(mark)
 
     def tearDown(self):
         if os.path.exists(self.temp_dir):

@@ -1,11 +1,11 @@
 # coding: utf-8
 # author: v.bazhin@gmail.com
 
+from __future__ import print_function
 import os
 from PIL import Image as PILImage   
 from django.conf import settings
 import unittest
-
 
 settings.configure(THUMBNAIL_WATERMARK = 'mark.png',
                    STATICFILES_DIRS = ('src', ), )
@@ -69,23 +69,26 @@ class BaseCase(unittest.TestCase):
         """
         Compare two rgba pixels list
         """
-        print '{engine} Testing {option}: {value}'.format(
+        print('{engine} Testing {option}: {value}'.format(
             engine=getattr(self.engine, 'name', str()),
             option=option,
             value=value
-        )
+        ))
         image_path = os.path.join(
             self.img_dir,
             option,
             '{}.png'.format(value)
         )
-        pre_image = PILImage.open(image_path)
         if value == 'default':
             options = dict()
         else:
             options = {option: value}
         mark = self.get_comparable_image(options)
-        self.assertEqual(self.get_pixels_list(mark), self.get_pixels_list(pre_image))
+        # https://github.com/python-pillow/Pillow/issues/835
+        with open(image_path, 'rb') as image_file:
+            with PILImage.open(image_file) as pre_image:
+                test_image_pixels = self.get_pixels_list(pre_image)
+        self.assertEqual(self.get_pixels_list(mark), test_image_pixels)
 
     def test_position(self):
         self.verify_watermark()

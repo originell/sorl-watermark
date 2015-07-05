@@ -15,8 +15,8 @@ def handle_padding(fn):
             'watermark_before_padding',
             settings.THUMBNAIL_WATERMARK_BEFORE_PADDING
         )
+        padding = False
         if watermark_before_padding:
-            padding = False
             if options.get('padding') and self.get_image_size(image) != geometry:
                 # remove padding option, add it later
                 padding = options['padding']
@@ -79,7 +79,7 @@ class WatermarkEngineBase(ThumbnailEngineBase):
                 options['watermark_size'] = parse_geometry(
                                             mark_sizes,
                                             self.get_image_ratio(image, options))
-            except TypeError, e:
+            except TypeError as e:
                 raise TypeError('Please, update sorl-thumbnail package version to  >= 11.12b. %s' % e)
         else:
             options['watermark_size'] = False
@@ -113,8 +113,6 @@ class WatermarkEngineBase(ThumbnailEngineBase):
             mark_size = size
         elif isinstance(size, float):
             mark_size = map(lambda coord: int(coord*size), mark_default_size)
-            # TODO: Might be useful to expose the crop/upscale options
-            #       to django settings
         else:
             raise ImproperlyConfigured('Watermark sizes must be a pair '
                                        'of integers or a float number')
@@ -132,17 +130,17 @@ class WatermarkEngineBase(ThumbnailEngineBase):
             x_abs = int(pos_list[0])
             y_abs = int(pos_list[1])
             # values below 0
-            x_pos = x_abs if x_abs >= 0 else coords['x']['east'] + x_abs
-            y_pos = y_abs if y_abs >= 0 else coords['y']['south'] + y_abs
-            position = (x_pos, y_pos)
+            x_pos = x_abs if x_abs >= 0 else int(coords['x']['east']) + x_abs
+            y_pos = y_abs if y_abs >= 0 else int(coords['y']['south']) + y_abs
+            position = (int(x_pos), int(y_pos))
         # if the values are not a pair of numbers
         except ValueError:
             if pos_list == ['center']:
-                position = (coords['x']['east']/2, coords['y']['south']/2)
+                position = (int(coords['x']['east']/2), int(coords['y']['south']/2))
             else:
                 x_val = [lon for lon in pos_list if lon in coords['x']]
                 y_val = [lat for lat in pos_list if lat in coords['y']]
                 x_key = x_val[0] if len(x_val) > 0 else 'east'
                 y_key = y_val[0] if len(y_val) > 0 else 'south'
-                position = (coords['x'][x_key], coords['y'][y_key])
+                position = (int(coords['x'][x_key]), int(coords['y'][y_key]))
         return position

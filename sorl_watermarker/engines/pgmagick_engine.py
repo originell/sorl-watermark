@@ -12,7 +12,8 @@ class Engine(WatermarkEngineBase, MagickEngine):
     name = 'PGMagick'
 
     def _watermark(self, image, watermark_path, opacity, size, position_str):
-        watermark = self.get_image(open(watermark_path))
+        with open(watermark_path, 'rb') as watermark_file:
+            watermark = self.get_image(watermark_file)
         image_size = self.get_image_size(image)
         layer = Image(Geometry(image_size[0], image_size[1]), 'transparent')
         if opacity < 1:
