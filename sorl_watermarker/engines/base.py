@@ -70,7 +70,7 @@ class WatermarkEngineBase(ThumbnailEngineBase):
         # Note - I do not think find can be used for this purpose - it is used for collecting static files to the static folder
         # Use os.path.join with the static root instead, and if not found, raise the error.
         watermark_path = find(watermark_img)
-        if not watermark.path:
+        if not watermark_path:
             watermark_path = os.path.join(settings.STATIC_ROOT, watermark_img)
             if not os.path.isfile(watermark_path):
                 raise AttributeError('Trying to apply a watermark, '
