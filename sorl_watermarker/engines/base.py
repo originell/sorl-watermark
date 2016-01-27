@@ -1,11 +1,12 @@
-from functools import wraps
-
+from django.conf import settings
 from django.contrib.staticfiles.finders import find
+from django.core.exceptions import ImproperlyConfigured
 from sorl.thumbnail.engines.base import EngineBase as ThumbnailEngineBase
 from sorl_watermarker.parsers import parse_geometry
 from sorl_watermarker.conf import settings
-from django.core.exceptions import ImproperlyConfigured
 
+from functools import wraps
+import os
 
 def handle_padding(fn):
 
@@ -66,7 +67,15 @@ class WatermarkEngineBase(ThumbnailEngineBase):
             raise AttributeError('Trying to apply a watermark, '
                                  'however no THUMBNAIL_WATERMARK defined, '
                                  'and watermark not set on tag')
+        # Note - I do not think find can be used for this purpose - it is used for collecting static files to the static folder
+        # Use os.path.join with the static root instead, and if not found, raise the error.
         watermark_path = find(watermark_img)
+        if not watermark.path:
+            watermark_path = os.path.join(settings.STATIC_ROOT, watermark_img)
+            if not os.path.isfile(watermark_path):
+                raise AttributeError('Trying to apply a watermark, '
+                                     'however no THUMBNAIL_WATERMARK defined, '
+                                     'or watermark can not be found!')
 
         if not 'cropbox' in options:
             options['cropbox'] = None
