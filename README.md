@@ -3,8 +3,15 @@
 As of 12th July 2013, *vbazhin* will be taking over development and take care of implementing all the
 mentioned features. Everybody welcome him with a warm applause :D!
 
+---
+
 sorl-watermark offers drop-in engines for sorl-thumbnail, which automagically
 insert a specified image as watermark on top of the original thumbnail.
+
+Supports:
+
+* Django 1.3+ (tested with Django 1.10.4)
+* Sorl-Thumbnail 11+ (tested with 12.4a1 and master commit c39536adb2e219412f83918a161be2fbc00010ba)
 
 Of course everything is configurable, from watermark image to the position and
 the opacity.
