@@ -11,6 +11,8 @@ flake8 = "*"
 black = "*"
 isort = "*"
 twine = "*"
+setuptools = "*"
+wheel = "*"
 
 [packages]
 
