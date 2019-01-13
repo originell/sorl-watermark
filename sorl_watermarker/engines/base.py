@@ -1,3 +1,4 @@
+import os
 from functools import wraps
 
 from django.contrib.staticfiles.finders import find
@@ -68,13 +69,10 @@ class WatermarkEngineBase(ThumbnailEngineBase):
         Takes care of all the options handling.
         """
         watermark_img = options.get("watermark", settings.THUMBNAIL_WATERMARK)
-
         if not watermark_img:
-            raise AttributeError(
-                "Trying to apply a watermark, "
-                "however no THUMBNAIL_WATERMARK defined, "
-                "and watermark not set on tag"
-            )
+            raise AttributeError("No THUMBNAIL_WATERMARK defined or set on tag.")
+        if not os.path.isfile(watermark_img):
+            raise RuntimeError("Set watermark does not point to a file.")
         watermark_path = find(watermark_img)
 
         if "cropbox" not in options:
