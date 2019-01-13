@@ -71,9 +71,11 @@ class WatermarkEngineBase(ThumbnailEngineBase):
         watermark_img = options.get("watermark", settings.THUMBNAIL_WATERMARK)
         if not watermark_img:
             raise AttributeError("No THUMBNAIL_WATERMARK defined or set on tag.")
-        if not os.path.isfile(watermark_img):
-            raise RuntimeError("Set watermark does not point to a file.")
         watermark_path = find(watermark_img)
+        if not watermark_path:
+            raise RuntimeError("Could not find the configured watermark file.")
+        if not os.path.isfile(watermark_path):
+            raise RuntimeError("Set watermark does not point to a file.")
 
         if "cropbox" not in options:
             options["cropbox"] = None
