@@ -50,6 +50,13 @@ class WatermarkEngineBase(ThumbnailEngineBase):
             or "watermark_alpha" in options
         ):
             image = self.watermark(image, options)
+            # WORKAROUND: Forcefully convert JPGs to RGB.
+            #             Pillow < 4.2 allowed this. Since then, one has to forcefully
+            #             convert. Which makes sense as JPGs can't have an alpha
+            #             channel.
+            #             See #28 for details.
+            if options.get("format", "").lower() == "jpeg" and image.mode == "RGBA":
+                image = image.convert("RGB")
         return image
 
     def watermark(self, image, options):
