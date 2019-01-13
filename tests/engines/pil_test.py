@@ -9,7 +9,6 @@ import os
 
 
 class PILTestCase(BaseCase):
-
     def __init__(self, *args, **kwargs):
         super(PILTestCase, self).__init__(*args, **kwargs)
         self.engine = PILEngine()
@@ -19,7 +18,7 @@ class PILTestCase(BaseCase):
         Creates a watermarked image
         """
         # https://github.com/python-pillow/Pillow/issues/835
-        with open(self.bg_path, 'rb') as bg_file:
+        with open(self.bg_path, "rb") as bg_file:
             with PILImage.open(bg_file) as bg:
                 mark = self.engine.watermark(bg, options)
         return mark
@@ -27,5 +26,5 @@ class PILTestCase(BaseCase):
 
 def pil_test_suite():
     suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(PILTestCase, 'test'))
+    suite.addTest(unittest.makeSuite(PILTestCase, "test"))
     return suite

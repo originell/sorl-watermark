@@ -9,5 +9,6 @@ def watermark_test_suite():
     suite.addTest(pgmagick_test_suite())
     return suite
 
-if __name__ == '__main__':
-    unittest.main(defaultTest='watermark_test_suite')
+
+if __name__ == "__main__":
+    unittest.main(defaultTest="watermark_test_suite")

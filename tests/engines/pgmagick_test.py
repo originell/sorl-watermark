@@ -11,11 +11,10 @@ import copy
 
 
 class PGmagickTestCase(BaseCase):
-
     def __init__(self, *args, **kwargs):
         super(PGmagickTestCase, self).__init__(*args, **kwargs)
         self.engine = PGEngine()
-        self.temp_dir = os.path.join(self.root_dir, 'src', 'temp')
+        self.temp_dir = os.path.join(self.root_dir, "src", "temp")
 
     def setUp(self):
         # Above all, we need to create the temp folder, if not exists
@@ -30,15 +29,15 @@ class PGmagickTestCase(BaseCase):
         bg = PGImage(self.bg_path)
         marked_image = self.engine.watermark(bg, options)
         path_kwargs = {
-            'option_key': str(list(options.keys())[0]),
-            'option_value': str(list(options.values())[0])
+            "option_key": str(list(options.keys())[0]),
+            "option_value": str(list(options.values())[0]),
         }
         temp_image_path = os.path.join(
-            self.temp_dir,
-            '{option_key}_{option_value}.png'.format(**path_kwargs))
+            self.temp_dir, "{option_key}_{option_value}.png".format(**path_kwargs)
+        )
         marked_image.write(temp_image_path)
         # https://github.com/python-pillow/Pillow/issues/835
-        with open(temp_image_path, 'rb') as image_file:
+        with open(temp_image_path, "rb") as image_file:
             with PILImage.open(image_file) as mark:
                 os.remove(temp_image_path)
                 return copy.deepcopy(mark)
@@ -50,5 +49,5 @@ class PGmagickTestCase(BaseCase):
 
 def pgmagick_test_suite():
     suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(PGmagickTestCase, 'test'))
+    suite.addTest(unittest.makeSuite(PGmagickTestCase, "test"))
     return suite
