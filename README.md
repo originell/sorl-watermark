@@ -7,6 +7,7 @@ Supports:
 * Django 1.3+ (tested with Django 1.10.4 up to 2.1)
 * Sorl-Thumbnail 11+ (tested with 12.4a1 to 12.5.0)
 * Pillow 3+ (tested with 3, 4.2 and 5)
+* Python 2.7 to 3.7
 
 Of course everything is configurable, from the watermark image to position and
 opacity.
