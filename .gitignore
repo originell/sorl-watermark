@@ -1,4 +1,7 @@
+dist/
+*.egg-info
 *.pyc
 *.swp
 *~
 .tox
+**/__pycache__/
