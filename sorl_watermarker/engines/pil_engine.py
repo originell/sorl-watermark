@@ -1,12 +1,12 @@
-from sorl.thumbnail.engines.pil_engine import Engine as PILEngine
-from sorl.thumbnail.images import ImageFile
 from sorl_watermarker.engines.base import WatermarkEngineBase
-import copy
+
+from sorl.thumbnail.engines.pil_engine import Engine as PILEngine
 
 try:
     from PIL import Image, ImageEnhance
 except ImportError:
-    import Image, ImageEnhance
+    import Image
+    import ImageEnhance
 
 
 class Engine(WatermarkEngineBase, PILEngine):

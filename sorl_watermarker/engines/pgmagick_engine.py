@@ -1,7 +1,10 @@
-from sorl.thumbnail.engines.pgmagick_engine import Engine as MagickEngine
 from sorl_watermarker.engines.base import WatermarkEngineBase
-from pgmagick import Geometry, Image, CompositeOperator as CoOp
-from pgmagick import ChannelType, ImageType, QuantumOperator as QuOp
+
+from pgmagick import ChannelType
+from pgmagick import CompositeOperator as CoOp
+from pgmagick import Geometry, Image, ImageType
+from pgmagick import QuantumOperator as QuOp
+from sorl.thumbnail.engines.pgmagick_engine import Engine as MagickEngine
 
 
 class Engine(WatermarkEngineBase, MagickEngine):

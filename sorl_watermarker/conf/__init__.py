@@ -1,5 +1,6 @@
 from django.conf import settings as user_settings
 from django.utils.functional import LazyObject
+
 from sorl_watermarker.conf import defaults as watermark_defaults
 
 

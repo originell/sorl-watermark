@@ -1,10 +1,12 @@
 from functools import wraps
 
 from django.contrib.staticfiles.finders import find
-from sorl.thumbnail.engines.base import EngineBase as ThumbnailEngineBase
-from sorl_watermarker.parsers import parse_geometry
-from sorl_watermarker.conf import settings
 from django.core.exceptions import ImproperlyConfigured
+
+from sorl.thumbnail.engines.base import EngineBase as ThumbnailEngineBase
+
+from ..conf import settings
+from ..parsers import parse_geometry
 
 
 def handle_padding(fn):
@@ -75,9 +77,9 @@ class WatermarkEngineBase(ThumbnailEngineBase):
             )
         watermark_path = find(watermark_img)
 
-        if not "cropbox" in options:
+        if "cropbox" not in options:
             options["cropbox"] = None
-        if not "watermark_alpha" in options:
+        if "watermark_alpha" not in options:
             options["watermark_alpha"] = settings.THUMBNAIL_WATERMARK_OPACITY
 
         mark_sizes = options.get("watermark_size", settings.THUMBNAIL_WATERMARK_SIZE)
@@ -94,7 +96,7 @@ class WatermarkEngineBase(ThumbnailEngineBase):
         else:
             options["watermark_size"] = False
 
-        if not "watermark_pos" in options:
+        if "watermark_pos" not in options:
             options["watermark_pos"] = settings.THUMBNAIL_WATERMARK_POSITION
 
         return self._watermark(
