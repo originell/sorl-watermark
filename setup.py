@@ -13,6 +13,7 @@ setup(
     platforms="any",
     description="Image based watermarks for sorl-thumbnail",
     long_description=open("README.md").read(),
+    long_description_content_type="text/markdown",
     classifiers=[
         "Development Status :: 4 - Beta",
         "Environment :: Web Environment",
