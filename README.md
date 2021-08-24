@@ -97,7 +97,7 @@ The following settings are available:
   Change the size of the watermark. This can either be a geometry string, as is usual
   with sorl-thumbnail (`x200`, `200x200`,…), or a percentage. If given a percentage,
   the watermark will always be the given percentage of the thumbnail size.
-* `THUMBNAIL_WATERMARK_OPACITY` (default: `0.0`, so opaque)  
+* `THUMBNAIL_WATERMARK_OPACITY` (default: `0.0`, meaning fully transparent)  
   A float from 0.0 to 1.0, specifying the opacity of the watermark.
 * `THUMBNAIL_WATERMARK_POSITION` (default: `"south east"`, so right-bottom corner)  
   Specifies the position of the watermark. There are multiple ways to set position:
