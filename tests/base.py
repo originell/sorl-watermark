@@ -25,7 +25,7 @@ OPTIONS_TO_TEST = (
     {"watermark_pos": "50 -50"},
     {"watermark_pos": "-50 -50"},
     {"watermark_pos": "-50 50"},
-    # TODO: {"watermark_pos": "tile"},
+    {"watermark_pos": "tile"},
     # Opacity
     {"watermark_alpha": 1},
     {"watermark_alpha": 0.75},
@@ -63,7 +63,7 @@ def get_expected_image(option: str, value: str = None, engine: str = None) -> Im
     fixtures_dir = FIXTURES_IMG_PIL_DIR
     if engine and engine.lower() == "pgmagick":
         fixtures_dir = FIXTURES_IMG_PGMAGICK_DIR
-    image_path = os.path.join(fixtures_dir, option, f"{value}.png")
+    image_path = os.path.join(fixtures_dir, f"{option}_{value}.png")
     # https://github.com/python-pillow/Pillow/issues/835
     with open(image_path, "rb") as image_file:
         with Image.open(image_file) as verification_img:

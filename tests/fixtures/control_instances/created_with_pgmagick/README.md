@@ -1,1 +1,0 @@
-This folder exists because pgmagick does create slightly different colors than PIL.
