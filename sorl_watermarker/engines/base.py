@@ -68,6 +68,9 @@ class WatermarkEngineBase(ThumbnailEngineBase):
 
         Takes care of all the options handling.
         """
+        # create a local copy of the options so we don't modify the passed in dict.
+        options = options.copy()
+
         watermark_img = options.get("watermark", settings.THUMBNAIL_WATERMARK)
         if not watermark_img:
             raise AttributeError("No THUMBNAIL_WATERMARK defined or set on tag.")

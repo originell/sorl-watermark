@@ -13,6 +13,11 @@ isort = "*"
 twine = "*"
 setuptools = "*"
 wheel = "*"
+pytest = "*"
+pytest-django = "*"
+pytest-cov = "*"
+pytest-xdist = "*"
+pytest-sugar = "*"
 
 [packages]
 

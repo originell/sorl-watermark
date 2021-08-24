@@ -1,5 +1,3 @@
-from sorl_watermarker.engines.base import WatermarkEngineBase
-
 from sorl.thumbnail.engines.pil_engine import Engine as PILEngine
 
 try:
@@ -8,17 +6,17 @@ except ImportError:
     import Image
     import ImageEnhance
 
+from .base import WatermarkEngineBase
+
 
 class Engine(WatermarkEngineBase, PILEngine):
-    """
-    PIL based thumbnailing engine with watermark support.
-    """
+    """PIL based thumbnailing engine with watermark support."""
 
-    name = "PIL/Pillow"
+    name = "PIL"
 
     def _watermark(self, image, watermark_path, opacity, size, position_str):
-        # have to do this because of the confirmed pillow bug
-        # to prevent resources leakage
+        # have to do this because of the confirmed pillow bug to prevent resources
+        # leakage
         # https://github.com/python-pillow/Pillow/issues/835
         with open(watermark_path, "rb") as image_file:
             with Image.open(image_file) as pil_watermark:
