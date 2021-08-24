@@ -1,7 +1,7 @@
 from codecs import open
 from os import path
 
-from setuptools import Extension, find_packages, setup
+from setuptools import find_packages, setup
 
 __version__ = "2.0.0"
 
