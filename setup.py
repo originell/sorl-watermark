@@ -5,10 +5,10 @@ from setuptools import find_packages
 
 setup(
     name="sorl-watermark",
-    version="1.1.0",
+    version="1.2.0",
     url="https://github.com/originell/sorl-watermark",
     author="Luis Nell",
-    author_email="cooperate@originell.org",
+    author_email="luis@originell.org",
     packages=find_packages(),
     platforms="any",
     description="Image based watermarks for sorl-thumbnail",
@@ -22,10 +22,7 @@ setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
         "Programming Language :: Python",
-        "Programming Language :: Python :: 2",
-        "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.7",
         "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
         "Topic :: Multimedia :: Graphics",
     ],
