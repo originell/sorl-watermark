@@ -3,12 +3,11 @@ name: CI
 on: [push, pull_request]
 
 jobs:
-  test:
-
-    runs-on: ubuntu-latest
+  test-legacy:
+    runs-on: ubuntu-16.04
     strategy:
       matrix:
-        python-version: [3.5, 3.6, 3.7, 3.8, 3.9]
+        python-version: [2.7]
 
     steps:
     - uses: actions/checkout@v2
@@ -42,12 +41,9 @@ jobs:
                                  libgraphicsmagick1-dev graphicsmagick libjpeg62 \
                                  zlib1g-dev
 
-    - name: Install dependencies
-      if: matrix.python-version != '2.7'
+    - name: LEGACY PY27 Install dependencies
       run: |
-        python -m pip install --upgrade pip || true
-        pip install tox tox-gh-actions
+        pip install tox==2.9.1
 
-    - name: Test with tox
-      if: matrix.python-version != '2.7'
-      run: tox -v
+    - name: LEGACY PY27 Test with tox
+      run: tox -v -e py27-django{1.8,1.9,1.10,1.11}-pgmagick-pillow{5,6}-sorl12.4
