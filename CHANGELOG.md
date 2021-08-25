@@ -1,12 +1,9 @@
 # Changelog
 
-## 1.2.0
+## 1.2.0 - Start of changelog! 
 
-Start of changelog!
+This is the last release to support Python 2 and Django <2.
 
-This release is known to be compatible with django 2, sorl-thumbnail 12.5.0+ and Pillow
-5+. It has been running in production for over a year, watermarking thousands of images.
-
-- Fix trying to write JPGs with opacity (#28)
 - Changed to MIT License
+- Fixes trying to write JPGs with opacity (#28)
 - Better error messages (!25)
