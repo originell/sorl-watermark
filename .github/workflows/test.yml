@@ -16,6 +16,13 @@ jobs:
       uses: actions/setup-python@v1
       with:
         python-version: ${{ matrix.python-version }}
+    - name: Install Linux dependencies
+      if: startsWith(matrix.os, 'ubuntu')
+      run: |
+        sudo apt-get update
+        sudo apt-get -qq install libfreetype6-dev liblcms2-dev python3-tk \
+                                 ghostscript libffi-dev libjpeg-turbo-progs libopenjp2-7-dev \
+                                 cmake imagemagick libharfbuzz-dev libfribidi-dev
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip || true
