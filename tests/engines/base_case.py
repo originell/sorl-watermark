@@ -7,11 +7,13 @@ from PIL import Image as PILImage
 from django.conf import settings
 import unittest
 
-settings.configure(THUMBNAIL_WATERMARK="mark.png", STATICFILES_DIRS=("src",))
+settings.configure(
+    THUMBNAIL_WATERMARK="mark.png", STATICFILES_DIRS=("src",), SECRET_KEY="SUPERSECRET"
+)
 
 
 POSITIONS_TO_TEST = (
-    "" "center",
+    "center",
     "south east",
     "south west",
     "north west",
