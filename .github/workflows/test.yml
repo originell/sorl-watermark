@@ -41,13 +41,12 @@ jobs:
                                  libboost-python-dev libgraphicsmagick++1-dev \
                                  libgraphicsmagick1-dev graphicsmagick libjpeg62 \
                                  zlib1g-dev
+        sudo ln -s /usr/lib/x86_64-linux-gnu/libboost_python38.so /usr/lib/x86_64-linux-gnu/libboost_python.so
 
     - name: Install dependencies
-      if: matrix.python-version != '2.7'
       run: |
         python -m pip install --upgrade pip || true
         pip install tox tox-gh-actions
 
     - name: Test with tox
-      if: matrix.python-version != '2.7'
       run: tox -v
