@@ -43,7 +43,14 @@ jobs:
                                  zlib1g-dev
         sudo ln -s /usr/lib/x86_64-linux-gnu/libboost_python38.so /usr/lib/x86_64-linux-gnu/libboost_python.so
 
-    - name: Install dependencies
+    - name: Install old Python 3.5 dependencies
+      if: matrix.python-version == '3.5'
+      run: |
+        python -m pip install pip==20.3.4 || true
+        pip install tox tox-gh-actions
+
+    - name: Install modern dependencies
+      if: matrix.python-version != '3.5'
       run: |
         python -m pip install --upgrade pip || true
         pip install tox tox-gh-actions
