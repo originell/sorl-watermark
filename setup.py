@@ -1,7 +1,11 @@
 # coding: utf-8
 
+import os
 from setuptools import setup
 from setuptools import find_packages
+
+
+README_FPATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'README.md')
 
 setup(
     name="sorl-watermark",
@@ -12,7 +16,7 @@ setup(
     packages=find_packages(),
     platforms="any",
     description="Image based watermarks for sorl-thumbnail",
-    long_description=open("README.md").read(),
+    long_description=open(README_FPATH).read(),
     long_description_content_type="text/markdown",
     classifiers=[
         "Development Status :: 6 - Mature",
