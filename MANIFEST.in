@@ -1,0 +1,5 @@
+include LICENSE *.rst *.txt *.md
+graft sorl_watermarker
+# Exclude generated files
+prune */__pycache__
+global-exclude *.pyc *.pyo *.pyd *.swp *.bak *~
