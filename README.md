@@ -1,19 +1,18 @@
 # sorl-watermark
 
-sorl-watermark adds support for watermarking to sorl-thumbnail.
+sorl-watermark adds support for adding watermarks to sorl-thumbnail.
 
-Supports:
+Tested with:
 
-* Django 1.3+ (tested with Django 1.10.4 up to 2.1)
-* Sorl-Thumbnail 11+ (tested with 12.4a1 to 12.5.0)
-* Pillow 3+ (tested with 3, 4.2 and 5)
-* Python 2.7 to 3.7
+* Django 1.8, 1.9, 1.10, 1.11, 2.0, 2.1, 2.2, 3.0, 3.1 and 3.2.
+* [sorl-Thumbnail](https://github.com/jazzband/sorl-thumbnail) 12.4, 12.5, 12.6 and 12.7.
+* Pillow 5, 6, 7 and 8.
+* Python 2.7, 3.5, 3.6, 3.7, 3.8 and 3.9.
 
 Of course everything is configurable, from the watermark image to position and
 opacity.
 
-If you are looking for a sorl engine to dynamically create text watermarks,
-you might want to have a look at [zeus/watermark](https://bitbucket.org/zeus/watermarker/overview).
+sorl-watermark does not ship with support for generating text-based watermarks.
 
 ## Setup
 
