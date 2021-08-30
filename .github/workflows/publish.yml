@@ -49,7 +49,7 @@ jobs:
           pip install django Pillow pgmagick sorl-thumbnail
 
       - name: Build sdist
-        run: python setup.py build sdist --universal
+        run: python setup.py build sdist
 
       - name: Test sdist
         run: |
