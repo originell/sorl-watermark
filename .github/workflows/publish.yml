@@ -12,10 +12,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+
       - uses: actions/setup-python@v2
         name: Install Python
         with:
           python-version: '3.x'
+
+      - name: Get pip cache dir
+        id: pip-cache
+        run: |
+          echo "::set-output name=dir::$(pip cache dir)"
+
+      - name: Cache
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.pip-cache.outputs.dir }}
+          key:
+            publish-py3-v1-${{ hashFiles('**/setup.py') }}
+          restore-keys: |
+            publish-py3-v1-
+
       - name: Install OS dependencies
         run: |
           sudo apt-get update
@@ -26,12 +42,15 @@ jobs:
                                 libgraphicsmagick1-dev graphicsmagick libjpeg62 \
                                 zlib1g-dev
           sudo ln -s /usr/lib/x86_64-linux-gnu/libboost_python38.so /usr/lib/x86_64-linux-gnu/libboost_python.so
+
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip || true
           pip install django Pillow pgmagick sorl-thumbnail
+
       - name: Build sdist
         run: python setup.py build sdist
+
       - name: Test sdist
         run: |
           set -exuo pipefail
@@ -44,9 +63,11 @@ jobs:
           python tests/runtests.py
           popd
           popd
+
       - uses: actions/upload-artifact@v2
         with:
           path: dist/*.tar.gz
+
   upload_pypi:
     name: Upload to (Test) PyPI
     needs: [ build_sdist ]
@@ -56,6 +77,7 @@ jobs:
         with:
           name: artifact
           path: dist
+
       - name: Upload to Test PyPI
         uses: pypa/gh-action-pypi-publish@v1.4.2
         with:
@@ -63,6 +85,7 @@ jobs:
           password: ${{ secrets.PYPI_TEST_TOKEN }}
           skip_existing: true
           repository_url: https://test.pypi.org/legacy/
+
       - name: Upload to PyPI
         # upload to PyPI on every tag starting with 'v'
         if: startsWith(github.ref, 'refs/tags/v')
