@@ -46,7 +46,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip || true
-          pip install django Pillow pgmagick sorl-thumbnail
+          pip install django Pillow pgmagick sorl-thumbnail tox tox-gh-actions
 
       - name: Build sdist
         run: python setup.py build sdist
@@ -61,7 +61,7 @@ jobs:
           pushd sorl-watermark*
           python setup.py install
           # test
-          python tests/runtests.py
+          tox -v
           popd
           popd
 
