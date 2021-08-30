@@ -49,7 +49,7 @@ jobs:
           pip install django Pillow pgmagick sorl-thumbnail
 
       - name: Build sdist
-        run: python setup.py build sdist
+        run: python setup.py build sdist --universal
 
       - name: Test sdist
         run: |
@@ -57,6 +57,7 @@ jobs:
           mkdir from_source
           pushd from_source
           tar -xf ../dist/sorl-watermark*.tar.gz
+          cp -r ../tests/src sorl-watermark*/tests/
           pushd sorl-watermark*
           python setup.py install
           # test
