@@ -69,7 +69,7 @@ jobs:
           # build extension
           python setup.py build_ext -i -f
           # test
-          python runtests.py
+          python tests/runtests.py
           popd
           popd
       - uses: actions/upload-artifact@v2
