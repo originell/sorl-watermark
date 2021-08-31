@@ -18,6 +18,7 @@ pytest-django = "*"
 pytest-cov = "*"
 pytest-xdist = "*"
 pytest-sugar = "*"
+wand = "*"
 
 [packages]
 

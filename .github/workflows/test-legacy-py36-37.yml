@@ -39,7 +39,7 @@ jobs:
                                    cmake imagemagick libharfbuzz-dev libfribidi-dev \
                                    libboost-python-dev libgraphicsmagick++1-dev \
                                    libgraphicsmagick1-dev graphicsmagick libjpeg62 \
-                                   zlib1g-dev
+                                   zlib1g-dev libmagickwand-dev
 
       - name: Install dependencies
         run: |

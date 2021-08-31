@@ -1,7 +1,8 @@
 import os
-from typing import List
+from typing import List, Union
 
-from PIL import Image
+from PIL import Image as PILImage
+from wand.image import Image as WandImage
 
 FIXTURES_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "fixtures"))
 
@@ -38,24 +39,32 @@ OPTIONS_TO_TEST = (
     {"watermark_size": "100x100"},
 )
 
+
 # this used to be 10k, but that makes it too unprecise.
 # tradeoff is that pytest takes longer to calculate the diff on inequality.
-def get_pixels(image: Image, denominator: int = 1000) -> List[int]:
-    """Creates an RGBA pixel list from a ``PIL.Image``.
+def get_pixels(image: Union[PILImage.Image, WandImage], denominator: int = 1000) -> List[int]:
+    """Creates an RGBA pixel list from an engine's image.
 
     For faster execution the resulting list length is reduced::
 
-        List length = all_image_pixels/denominator.
+        List length = all_image_pixels / denominator
     """
-    if image.mode != "RGBA":
-        image = image.convert("RGBA")
+    binary_read_method = None
+    if isinstance(image, PILImage.Image):
+        if image.mode != "RGBA":
+            image = image.convert("RGBA")
+        binary_read_method = image.getdata
+    elif isinstance(image, WandImage):
+        binary_read_method = image.export_pixels
+    else:
+        raise RuntimeError(f"Unknown image class supplied: '{type(image)}'")
     short_list = [
-        pixel for idx, pixel in enumerate(image.getdata()) if idx % denominator == 0
+        pixel for idx, pixel in enumerate(binary_read_method()) if idx % denominator == 0
     ]
     return short_list
 
 
-def get_expected_image(option: str, value: str = None, engine: str = None) -> Image:
+def get_expected_image_path(option: str, value: str = None, engine: str = None) -> str:
     """Loads the matching control instance."""
     if value is None:
         value = "default"
@@ -63,8 +72,25 @@ def get_expected_image(option: str, value: str = None, engine: str = None) -> Im
     fixtures_dir = FIXTURES_IMG_PIL_DIR
     if engine and engine.lower() == "pgmagick":
         fixtures_dir = FIXTURES_IMG_PGMAGICK_DIR
-    image_path = os.path.join(fixtures_dir, f"{option}_{value}.png")
-    # https://github.com/python-pillow/Pillow/issues/835
-    with open(image_path, "rb") as image_file:
-        with Image.open(image_file) as verification_img:
-            return verification_img.copy()
+    return os.path.join(fixtures_dir, f"{option}_{value}.png")
+
+
+def get_expected_image(
+    option: str, value: str = None, engine: str = "pil"
+) -> Union[PILImage.Image, WandImage]:
+    """Loads the matching control instance.
+
+    Different engines will give you different return values.
+
+    * ``engine="pil"`` or ``engine="pgmagick"`` will return a PIL Image.
+    * ``engine="wand"`` will return a Wand Image
+    """
+    image_path = get_expected_image_path(option, value, engine)
+    if engine.lower() in ["pgmagick", "pil", "pillow"]:
+        # https://github.com/python-pillow/Pillow/issues/835
+        with open(image_path, "rb") as image_file:
+            with PILImage.open(image_file) as verification_img:
+                return verification_img.copy()
+    if engine.lower() == "wand":
+        return WandImage(filename=image_path)
+    raise RuntimeError(f"Unknown engine: '{engine}'")
