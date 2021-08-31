@@ -1,9 +1,8 @@
 name: Publish
 
-#on:
-#  release:
-#    types: [ published ]
-on: [push, pull_request]
+on:
+  release:
+    types: [ published ]
 
 # Thanks to pybase64 for having a great build process to steal from.
 jobs:
