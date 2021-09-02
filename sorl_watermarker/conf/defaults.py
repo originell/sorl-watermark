@@ -17,3 +17,7 @@ THUMBNAIL_WATERMARK_POSITION = "south east"
 
 # Add watermark before applying padding
 THUMBNAIL_WATERMARK_BEFORE_PADDING = True
+
+# Path to convert command, use 'gm composite' for GraphicsMagick. Only applicable for the
+# convert Engine.
+THUMBNAIL_WATERMARK_COMPOSITE = "composite"

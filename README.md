@@ -20,8 +20,16 @@ sorl-watermark adds support for watermarking to [sorl-thumbnail](https://github.
 3. Swap out your sorl-thumbnail engine with one from sorl-watermark:
 
     ```python
-    # Pillow and PIL Engine:
+    # Pillow and PIL Engine
     THUMBNAIL_ENGINE = 'sorl_watermarker.engines.pil_engine.Engine'
+   
+    # or Wand
+    THUMBNAIL_ENGINE = 'sorl_watermarker.engines.wand_engine.Engine'
+   
+    # or ImageMagick/GraphicsMagick. 
+    # When using this engine, remember to also set the THUMBNAIL_WATERMARK_COMPOSITE
+    # setting. See the reference at the bottom.
+    THUMBNAIL_ENGINE = 'sorl_watermarker.engines.convert_engine.Engine'
     ```
 
     There are more supported engines. Make sure to check the settings reference at the
@@ -118,3 +126,6 @@ The following settings are available:
       You can change position with a pair of padding values (in pixels). E.g. "20 20"
       will place the watermark near the left-top corner, "-20 -20" - near the right-bottom
       corner. 
+* `THUMBNAIL_WATERMARK_COMPOSITE` (default: `'composite'`).  
+  Path to composite command, use `'gm composite'` for GraphicsMagick. Only applicable 
+  for the convert Engine.

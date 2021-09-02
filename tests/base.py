@@ -82,11 +82,12 @@ def get_expected_image(
 
     Different engines will give you different return values.
 
-    * ``engine="pil"`` or ``engine="pgmagick"`` will return a PIL Image.
+    * ``engine="pil"``, ``engine="pgmagick"`` or ``engine="pgmagick"`` will return a PIL
+      Image.
     * ``engine="wand"`` will return a Wand Image
     """
     image_path = get_expected_image_path(option, value, engine)
-    if engine.lower() in ["pgmagick", "pil", "pillow"]:
+    if engine.lower() in ["pgmagick", "pil", "pillow", "convert"]:
         # https://github.com/python-pillow/Pillow/issues/835
         with open(image_path, "rb") as image_file:
             with PILImage.open(image_file) as verification_img:
