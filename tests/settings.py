@@ -5,6 +5,7 @@ from .base import FIXTURES_DIR
 
 SECRET_KEY = "SECRET"
 PROJ_ROOT = abspath(pjoin(dirname(__file__), pardir))
+
 THUMBNAIL_PREFIX = "test/cache/"
 THUMBNAIL_DEBUG = True
 THUMBNAIL_LOG_HANDLER = {
@@ -13,6 +14,9 @@ THUMBNAIL_LOG_HANDLER = {
 }
 THUMBNAIL_KVSTORE = "tests.thumbnail_tests.kvstore.TestKVStore"
 THUMBNAIL_STORAGE = "tests.thumbnail_tests.storage.TestStorage"
+THUMBNAIL_VIPSTHUMBNAIL = 'vipsthumbnail'
+THUMBNAIL_VIPSHEADER = 'vipsheader'
+
 DEFAULT_FILE_STORAGE = "tests.thumbnail_tests.storage.TestStorage"
 ADMINS = (("Sorl Watermark", "foobar@example.com"),)
 DATABASES = {

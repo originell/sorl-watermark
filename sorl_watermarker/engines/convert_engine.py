@@ -17,7 +17,9 @@ class Engine(WatermarkEngineBase, ConvertEngine):
 
     name = "Convert"
 
-    def _watermark(self, image, watermark_path, opacity, size, position_str):
+    def _watermark(
+        self, image, watermark_path, opacity, size, position_str, img_format
+    ):
         with open(watermark_path, "rb") as image_file:
             # this returns a dict!
             watermark = self.get_image(image_file)
@@ -30,7 +32,7 @@ class Engine(WatermarkEngineBase, ConvertEngine):
 
         mark_size = watermark["size"]
         if size:
-            mark_size = tuple(self._get_new_watermark_size(size, mark_size))
+            mark_size = self._get_new_watermark_size(size, mark_size)
             options = {"crop": "center", "upscale": mark_size > watermark["size"]}
             watermark = self.scale(watermark, mark_size, options)
             watermark = self.crop(watermark, mark_size, options)
@@ -48,12 +50,14 @@ class Engine(WatermarkEngineBase, ConvertEngine):
             self.write(watermark, write_options, next_watermark)
             next_watermark.seek(0)
             watermark = self.get_image(next_watermark)
+            self.get_image_size(watermark)
         position = self._define_watermark_position(
             position_str, image["size"], mark_size
         )
+
         args = settings.THUMBNAIL_WATERMARK_COMPOSITE.split(" ")
         if position_str == "tile":
-            args.append('-tile')
+            args.append("-tile")
         if opacity < 1:
             # -watermark would be the logical option. But it leads to black/white images.
             # According to https://legacy.imagemagick.org/Usage/annotating/#watermarking
@@ -75,14 +79,15 @@ class Engine(WatermarkEngineBase, ConvertEngine):
         geometry_str = ""
         for pos in position:
             if pos > 0:
-                geometry_str += f'+{pos}'
+                geometry_str += f"+{pos}"
             else:
-                geometry_str += f'-{pos}'
+                geometry_str += f"-{pos}"
         args.append(geometry_str)
-        args.append(watermark['source'])
+        args.append(watermark["source"])
         args.append(image["source"])
         args.append(image["source"])
-        args = map(smart_str, args)
+
+        args = [smart_str(arg) for arg in args]
         p = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         returncode = p.wait()
         out, err = p.communicate()

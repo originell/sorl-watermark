@@ -109,9 +109,12 @@ class WatermarkEngineBase(ThumbnailEngineBase):
             options["watermark_alpha"],
             options["watermark_size"],
             options["watermark_pos"],
+            options["format"],
         )
 
-    def _watermark(self, image, watermark_path, opacity, size, position_str):
+    def _watermark(
+        self, image, watermark_path, opacity, size, position_str, img_format
+    ):
         """Returns a combined thumbnail with an imposed watermark.
 
         To be implemented by the child classes.

@@ -30,6 +30,11 @@ sorl-watermark adds support for watermarking to [sorl-thumbnail](https://github.
     # When using this engine, remember to also set the THUMBNAIL_WATERMARK_COMPOSITE
     # setting. See the reference at the bottom.
     THUMBNAIL_ENGINE = 'sorl_watermarker.engines.convert_engine.Engine'
+   
+    # or libvips. 
+    # When using this engine, remember to also set the THUMBNAIL_WATERMARK_VIPS
+    # setting. See the reference at the bottom.
+    THUMBNAIL_ENGINE = 'sorl_watermarker.engines.vips_engine.Engine'
     ```
 
     There are more supported engines. Make sure to check the settings reference at the
@@ -129,3 +134,5 @@ The following settings are available:
 * `THUMBNAIL_WATERMARK_COMPOSITE` (default: `'composite'`).  
   Path to composite command, use `'gm composite'` for GraphicsMagick. Only applicable 
   for the convert Engine.
+* `THUMBNAIL_WATERMARK_VIPS` (default: `'vips'`).  
+  Path to vips command. Only applicable for the Vips Engine.

@@ -14,7 +14,9 @@ class Engine(WatermarkEngineBase, PILEngine):
 
     name = "PIL"
 
-    def _watermark(self, image, watermark_path, opacity, size, position_str):
+    def _watermark(
+        self, image, watermark_path, opacity, size, position_str, img_format
+    ):
         # have to do this because of the confirmed pillow bug to prevent resources
         # leakage
         # https://github.com/python-pillow/Pillow/issues/835
@@ -30,7 +32,7 @@ class Engine(WatermarkEngineBase, PILEngine):
         if not size:
             mark_size = watermark.size
         else:
-            mark_size = tuple(self._get_new_watermark_size(size, watermark.size))
+            mark_size = self._get_new_watermark_size(size, watermark.size)
             options = {"crop": "center", "upscale": mark_size > watermark.size}
             watermark = self.scale(watermark, mark_size, options)
             watermark = self.crop(watermark, mark_size, options)

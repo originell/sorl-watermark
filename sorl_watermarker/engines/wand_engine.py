@@ -8,7 +8,9 @@ class Engine(WatermarkEngineBase, WandEngine):
 
     name = "Wand"
 
-    def _watermark(self, image, watermark_path, opacity, size, position_str):
+    def _watermark(
+        self, image, watermark_path, opacity, size, position_str, img_format
+    ):
         with open(watermark_path, "rb") as image_file:
             watermark = self.get_image(image_file)
 
@@ -20,7 +22,7 @@ class Engine(WatermarkEngineBase, WandEngine):
         if not size:
             mark_size = watermark.size
         else:
-            mark_size = tuple(self._get_new_watermark_size(size, watermark.size))
+            mark_size = self._get_new_watermark_size(size, watermark.size)
             options = {"crop": "center", "upscale": mark_size > watermark.size}
             watermark = self.scale(watermark, mark_size, options)
             watermark = self.crop(watermark, mark_size, options)
