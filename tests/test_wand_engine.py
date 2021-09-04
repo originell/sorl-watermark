@@ -12,6 +12,8 @@ from .base import BACKGROUND_IMG_PATH, get_expected_image, get_pixels, OPTIONS_T
 def watermark_image(options: dict) -> Image:
     """Creates a watermarked image."""
     bg_img = Image(filename=BACKGROUND_IMG_PATH)
+    options = options.copy()
+    options["format"] = "PNG"
     marked_img = WandEngine().watermark(bg_img, options)
     return marked_img
 

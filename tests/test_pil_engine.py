@@ -9,6 +9,8 @@ from .base import BACKGROUND_IMG_PATH, get_expected_image, get_pixels, OPTIONS_T
 def watermark_image(options: dict) -> Image:
     """Creates a watermarked image."""
     # https://github.com/python-pillow/Pillow/issues/835
+    options = options.copy()
+    options["format"] = "PNG"
     with open(BACKGROUND_IMG_PATH, "rb") as bg_file:
         with Image.open(bg_file) as bg_img:
             marked_img = PILEngine().watermark(bg_img, options)

@@ -13,6 +13,8 @@ def watermark_image(options: dict) -> dict:
     # https://github.com/python-pillow/Pillow/issues/835
     with open(BACKGROUND_IMG_PATH, 'rb') as fd:
         bg_img = ConvertEngine().get_image(fd)
+    options = options.copy()
+    options["format"] = "PNG"
     marked_img = ConvertEngine().watermark(bg_img, options)
     return marked_img
 

@@ -13,6 +13,8 @@ def watermark_image(options: dict) -> Image:
     """Creates a watermarked image."""
     # https://github.com/python-pillow/Pillow/issues/835
     bg_img = Image(BACKGROUND_IMG_PATH)
+    options = options.copy()
+    options["format"] = "PNG"
     marked_img = PGMagickEngine().watermark(bg_img, options)
     return marked_img
 
