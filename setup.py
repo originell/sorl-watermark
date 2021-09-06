@@ -49,5 +49,5 @@ setup(
     include_package_data=True,
     author="Luis Nell",
     author_email="luis@originell.org",
-    install_requires=["sorl-thumbnail>=12.7.0"],
+    install_requires=["sorl-thumbnail>=12.5.0"],
 )
