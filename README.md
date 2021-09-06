@@ -17,34 +17,49 @@ sorl-watermark adds support for watermarking to [sorl-thumbnail](https://github.
     $ pip install sorl-watermark
     ```
 
-3. Swap out your sorl-thumbnail engine with one from sorl-watermark:
+2. Swap out your sorl-thumbnail engine with one from sorl-watermark:
+    * Pillow (PIL) based engine:
 
-    ```python
-    # Pillow and PIL Engine
-    THUMBNAIL_ENGINE = 'sorl_watermarker.engines.pil_engine.Engine'
-   
-    # or Wand
-    THUMBNAIL_ENGINE = 'sorl_watermarker.engines.wand_engine.Engine'
-   
-    # or ImageMagick/GraphicsMagick. 
-    # When using this engine, remember to also set the THUMBNAIL_WATERMARK_COMPOSITE
-    # setting. See the reference at the bottom.
-    THUMBNAIL_ENGINE = 'sorl_watermarker.engines.convert_engine.Engine'
-   
-    # or libvips. 
-    # When using this engine, remember to also set the THUMBNAIL_WATERMARK_VIPS
-    # setting. See the reference at the bottom.
-    # Note: this engine, just like sorl-thumbnail, uses the vips command line. Not the 
-    #       library. Hence, performance might not be stellar for all usecases. The best
-    #       example here is that THUMBNAIL_WATERMARK_POSITION="tile" is terribly slow in
-    #       comparison. That's because we can't pipe and have to write multiple images 
-    #       to disk before assembling the final one.
-    THUMBNAIL_ENGINE = 'sorl_watermarker.engines.vips_engine.Engine'
-    ```
+       ```python
+       THUMBNAIL_ENGINE = 'sorl_watermarker.engines.pil_engine.Engine'
+      ```
+    * Wand based engine:
 
-    There are more supported engines. Make sure to check the settings reference at the
-    bottom of this document.
-4. Configure the watermark image. Note that this file has to live somewhere
+      ```python
+      THUMBNAIL_ENGINE = 'sorl_watermarker.engines.wand_engine.Engine'
+      ```
+   * pgmagick based engine:
+
+     ```python
+     THUMBNAIL_ENGINE = 'sorl_watermarker.engines.pgmagick_engine.Engine'
+     ```
+    * ImageMagick/GraphicsMagick engine:
+    
+      ```python
+      THUMBNAIL_ENGINE = 'sorl_watermarker.engines.convert_engine.Engine'
+      ```
+      
+      When using this engine, remember to also set the ``THUMBNAIL_WATERMARK_COMPOSITE``
+      setting. See the reference at the bottom.
+    * vips (libvips) engine. This 
+
+      ```python
+      THUMBNAIL_ENGINE = 'sorl_watermarker.engines.vips_engine.Engine'
+      ```
+        
+      This engine has some important things to know:
+    
+      1. Requires libvips 8.7.0. Ideally 8.8.0, as that includes some speedups for the 
+         used `vips composite` command.
+      3. When using this engine, remember to also set the ``THUMBNAIL_WATERMARK_VIPS``
+         setting. See the reference at the bottom.
+      4. This engine, just like sorl-thumbnail, uses the vips command line. Not the
+         library. Hence, performance might not be stellar for all usecases. The best
+         example here is that `THUMBNAIL_WATERMARK_POSITION="tile"` is terribly slow in
+         comparison to other engines. That's because we can't pipe and have to write 
+         multiple images to disk before assembling the final one.
+
+3. Configure the watermark image. Note that this file has to live somewhere
    inside `STATIC_ROOT`.
 
     ```python
