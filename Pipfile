@@ -19,6 +19,7 @@ pytest-cov = "*"
 pytest-xdist = "*"
 pytest-sugar = "*"
 wand = "*"
+pytest-mock = "*"
 
 [packages]
 

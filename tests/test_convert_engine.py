@@ -1,5 +1,3 @@
-import tempfile
-
 import pytest
 from PIL import Image as PILImage
 

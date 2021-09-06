@@ -2,7 +2,6 @@ import tempfile
 
 import pytest
 from wand.image import Image
-from PIL import Image as PILImage
 
 from sorl_watermarker.engines.wand_engine import Engine as WandEngine
 

@@ -12,12 +12,14 @@ THUMBNAIL_LOG_HANDLER = {
     "class": "sorl.thumbnail.log.ThumbnailLogHandler",
     "level": "ERROR",
 }
-THUMBNAIL_KVSTORE = "tests.thumbnail_tests.kvstore.TestKVStore"
-THUMBNAIL_STORAGE = "tests.thumbnail_tests.storage.TestStorage"
-THUMBNAIL_VIPSTHUMBNAIL = 'vipsthumbnail'
-THUMBNAIL_VIPSHEADER = 'vipsheader'
+THUMBNAIL_KVSTORE = "watermark_tests_app.kvstore.TestKVStore"
+THUMBNAIL_STORAGE = "watermark_tests_app.storage.TestStorage"
+THUMBNAIL_VIPSTHUMBNAIL = "vipsthumbnail"
+THUMBNAIL_VIPSHEADER = "vipsheader"
+THUMBNAIL_REDIS_SSL = False
+THUMBNAIL_WATERMARK = "mark.png"
 
-DEFAULT_FILE_STORAGE = "tests.thumbnail_tests.storage.TestStorage"
+DEFAULT_FILE_STORAGE = "watermark_tests_app.storage.TestStorage"
 ADMINS = (("Sorl Watermark", "foobar@example.com"),)
 DATABASES = {
     "default": {
@@ -25,7 +27,8 @@ DATABASES = {
         "NAME": ":memory:",
     }
 }
-MEDIA_ROOT = pjoin(PROJ_ROOT, "media")
+# FORGIVE ME: ugly, but django wants referenced files to live there
+MEDIA_ROOT = pjoin(PROJ_ROOT, "tests", "fixtures")
 MEDIA_URL = "/media/"
 ROOT_URLCONF = "tests.thumbnail_tests.urls"
 INSTALLED_APPS = (
@@ -48,7 +51,7 @@ MIDDLEWARE = (
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 )
-THUMBNAIL_REDIS_SSL = False
 
-STATICFILES_DIRS = [FIXTURES_DIR,]
-THUMBNAIL_WATERMARK = "mark.png"
+STATICFILES_DIRS = [
+    FIXTURES_DIR,
+]
