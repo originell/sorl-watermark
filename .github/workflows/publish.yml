@@ -1,9 +1,8 @@
 name: Publish
 
-#on:
-#  release:
-#    types: [ published ]
-on: [push, pull_request]
+on:
+  release:
+    types: [ published ]
 
 # Thanks to pybase64 for having a great build process to steal from.
 jobs:
@@ -40,7 +39,7 @@ jobs:
                                 cmake imagemagick libharfbuzz-dev libfribidi-dev \
                                 libboost-python-dev libgraphicsmagick++1-dev \
                                 libgraphicsmagick1-dev graphicsmagick libjpeg62 \
-                                zlib1g-dev
+                                zlib1g-dev libmagickwand-dev libvips-dev
           sudo ln -s /usr/lib/x86_64-linux-gnu/libboost_python38.so /usr/lib/x86_64-linux-gnu/libboost_python.so
 
       - name: Install dependencies

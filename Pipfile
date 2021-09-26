@@ -13,11 +13,18 @@ isort = "*"
 twine = "*"
 setuptools = "*"
 wheel = "*"
+pytest = "*"
+pytest-django = "*"
+pytest-cov = "*"
+pytest-xdist = "*"
+pytest-sugar = "*"
+wand = "*"
+pytest-mock = "*"
 
 [packages]
 
 [requires]
-python_version = "3.7"
+python_version = "3.9"
 
 [pipenv]
 allow_prereleases = true

@@ -1,20 +1,21 @@
 from django.conf import settings as user_settings
-from django.utils.functional import LazyObject
 
-from sorl_watermarker.conf import defaults as watermark_defaults
-
-
-class Settings(object):
-    pass
+from . import defaults
 
 
-class LazySettings(LazyObject):
-    def _setup(self):
-        self._wrapped = Settings()
-        for obj in (watermark_defaults, user_settings):
-            for attr in dir(obj):
-                if attr == attr.upper():
-                    setattr(self, attr, getattr(obj, attr))
+class Settings:
+    """
+    Settings proxy that will lookup first in the django settings, and then in the conf
+    defaults.
+    """
+
+    def __getattr__(self, name):
+        if name != name.upper():
+            raise AttributeError(name)
+        try:
+            return getattr(user_settings, name)
+        except AttributeError:
+            return getattr(defaults, name)
 
 
-settings = LazySettings()
+settings = Settings()

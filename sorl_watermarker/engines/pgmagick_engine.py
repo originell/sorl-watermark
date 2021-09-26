@@ -1,10 +1,11 @@
 from sorl_watermarker.engines.base import WatermarkEngineBase
 
-from pgmagick import ChannelType
 from pgmagick import CompositeOperator as CoOp
 from pgmagick import Geometry, Image, ImageType
-from pgmagick import QuantumOperator as QuOp
 from sorl.thumbnail.engines.pgmagick_engine import Engine as MagickEngine
+
+# The legendary MaxRGB constant
+MAX_RGB = 65535
 
 
 class Engine(WatermarkEngineBase, MagickEngine):
@@ -14,7 +15,9 @@ class Engine(WatermarkEngineBase, MagickEngine):
 
     name = "PGMagick"
 
-    def _watermark(self, image, watermark_path, opacity, size, position_str):
+    def _watermark(
+        self, image, watermark_path, opacity, size, position_str, img_format
+    ):
         with open(watermark_path, "rb") as watermark_file:
             watermark = self.get_image(watermark_file)
         image_size = self.get_image_size(image)
@@ -46,15 +49,10 @@ class Engine(WatermarkEngineBase, MagickEngine):
         return image
 
     def _reduce_opacity(self, watermark, opacity):
-        """
-        Returns an image with reduced opacity. Converts image to RGBA if needs.
-
-        Simple watermark.opacity(65535 - int(65535 * opacity) would not work for
-        images with the Opacity channel (RGBA images). So we have to convert RGB or any
-        other type to RGBA in this case
-        """
-
+        """Returns an image with reduced opacity. Converts image to RGBA if need be."""
+        # Simple watermark.opacity() would not work for images with the Opacity channel
+        # (RGBA images). So we have to convert RGB or any other type to RGBA in this
+        # case
         if watermark.type() != ImageType.TrueColorMatteType:
             watermark.type(ImageType.TrueColorMatteType)
-        depth = 255 - int(255 * opacity)
-        watermark.quantumOperator(ChannelType.OpacityChannel, QuOp.MaxQuantumOp, depth)
+        watermark.opacity(int(MAX_RGB * (1 - opacity)))

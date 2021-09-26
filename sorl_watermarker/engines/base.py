@@ -1,5 +1,6 @@
 import os
 from functools import wraps
+from typing import Union
 
 from django.contrib.staticfiles.finders import find
 from django.core.exceptions import ImproperlyConfigured
@@ -17,28 +18,32 @@ def handle_padding(fn):
             "watermark_before_padding", settings.THUMBNAIL_WATERMARK_BEFORE_PADDING
         )
         padding = False
-        if watermark_before_padding:
-            if options.get("padding") and self.get_image_size(image) != geometry:
-                # remove padding option, add it later
-                padding = options["padding"]
-                options["padding"] = False
+        if (
+            watermark_before_padding
+            and options.get("padding")
+            and self.get_image_size(image) != geometry
+        ):
+            # remove padding option, add it later
+            padding = options["padding"]
+            options["padding"] = False
 
         image = fn(self, image, geometry, options)
 
-        if watermark_before_padding:
-            if padding and self.get_image_size(image) != geometry:
-                # add padding after watermark
-                options["padding"] = padding
-                image = self.padding(image, geometry, options)
+        if (
+            watermark_before_padding
+            and padding
+            and self.get_image_size(image) != geometry
+        ):
+            # add padding after watermark
+            options["padding"] = padding
+            image = self.padding(image, geometry, options)
         return image
 
     return wrapped
 
 
 class WatermarkEngineBase(ThumbnailEngineBase):
-    """
-    Extend sorl.thumbnail base engine to support watermarks.
-    """
+    """Extend sorl.thumbnail base engine to support watermarks."""
 
     name = "BaseEngine"
 
@@ -63,11 +68,10 @@ class WatermarkEngineBase(ThumbnailEngineBase):
         return image
 
     def watermark(self, image, options):
-        """
-        Wrapper for ``_watermark``
+        """Wrapper for ``_watermark``. Takes care of all the options handling."""
+        # create a local copy of the options so we don't modify the passed in dict.
+        options = options.copy()
 
-        Takes care of all the options handling.
-        """
         watermark_img = options.get("watermark", settings.THUMBNAIL_WATERMARK)
         if not watermark_img:
             raise AttributeError("No THUMBNAIL_WATERMARK defined or set on tag.")
@@ -105,33 +109,36 @@ class WatermarkEngineBase(ThumbnailEngineBase):
             options["watermark_alpha"],
             options["watermark_size"],
             options["watermark_pos"],
+            options["format"],
         )
 
-    def _watermark(self, image, watermark_path, opacity, size, position_str):
-        """
-        Returns a combined thumbnail with a imposed watermark
+    def _watermark(
+        self, image, watermark_path, opacity, size, position_str, img_format
+    ):
+        """Returns a combined thumbnail with an imposed watermark.
 
-        Implemented by the used engine.
+        To be implemented by the child classes.
         """
         raise NotImplementedError()
 
-    def _get_new_watermark_size(self, size, mark_default_size):
-        """
-        New size can be passed as a pair of valuer (tuple) or
-        a fsloat (persentage case)
-        """
+    def _get_new_watermark_size(
+        self, size: Union[tuple, float], mark_default_size: tuple
+    ) -> tuple:
+        """Calculate new size."""
         if hasattr(size, "__getitem__"):
-            # a tuple or any iterable already
+            # a tuple or an iterable already
             mark_size = size
         elif isinstance(size, float):
-            mark_size = map(lambda coord: int(coord * size), mark_default_size)
+            mark_size = tuple(int(coord * size) for coord in mark_default_size)
         else:
             raise ImproperlyConfigured(
-                "Watermark sizes must be a pair " "of integers or a float number"
+                "Watermark sizes must be a pair of integers or a float number"
             )
         return mark_size
 
-    def _define_watermark_position(self, position_string, im_size, mark_size):
+    def _define_watermark_position(
+        self, position_string: str, im_size: tuple, mark_size: tuple
+    ) -> tuple:
         pos_list = position_string.split(" ")
         coords = {
             "x": {"west": 0, "east": im_size[0] - mark_size[0]},
