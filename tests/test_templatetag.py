@@ -26,7 +26,8 @@ for engine_to_test in AVAILABLE_ENGINES:
         how_many = random.randint(1, 5)
         random_opt_combination = {}
         for rando in random.sample(options_to_test, k=how_many):
-            for rando_key, rando_value in rando.items():
+            rando_options = rando[0]
+            for rando_key, rando_value in rando_options.items():
                 random_opt_combination[rando_key] = rando_value
         options_to_test.append(random_opt_combination)
     for engine_opts in options_to_test:

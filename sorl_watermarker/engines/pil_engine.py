@@ -23,10 +23,14 @@ class Engine(WatermarkEngineBase, PILEngine):
         with open(watermark_path, "rb") as image_file:
             with Image.open(image_file) as pil_watermark:
                 watermark = pil_watermark.copy()
-        if opacity < 1:
-            watermark = self._reduce_opacity(watermark, opacity)
+        # convert everything to RGBA. smarter code would only do this based on given
+        # input and wanted outcome, but this feels good enough and easier to reason with.
         if image.mode != "RGBA":
             image = image.convert("RGBA")
+        if watermark.mode != "RGBA":
+            watermark = watermark.convert("RGBA")
+        if opacity < 1:
+            watermark = self._reduce_opacity(watermark, opacity)
         # create a transparent layer the size of the image and draw the
         # watermark in that layer.
         if not size:
@@ -47,11 +51,19 @@ class Engine(WatermarkEngineBase, PILEngine):
             )
             layer.paste(watermark, position)
         del watermark
-        return Image.composite(layer, image, layer)
+        composite = Image.composite(layer, image, layer)
+        # WORKAROUND: Forcefully convert JPGs to RGB.
+        #             Pillow < 4.2 allowed saving RGBA JPG which implied this conversion
+        #             below. See #28 for details.
+        if img_format.lower() in ["jpeg", "jpg"] and composite.mode == "RGBA":
+            # Forgive me: this can hurt you. converting transparency away seems to make
+            # things more 'white'. So in the future if some github issue shows up with
+            # this, we might have to allow for an option to configure if transparency
+            # should be composed together from Black or White.
+            composite = composite.convert("RGB")
+        return composite
 
     def _reduce_opacity(self, image, opacity):
-        if image.mode != "RGBA":
-            image = image.convert("RGBA")
         alpha = image.split()[3]
         alpha = ImageEnhance.Brightness(alpha).enhance(opacity)
         image.putalpha(alpha)

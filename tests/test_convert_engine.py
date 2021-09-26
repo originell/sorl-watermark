@@ -3,32 +3,47 @@ from PIL import Image as PILImage
 
 from sorl_watermarker.engines.convert_engine import Engine as ConvertEngine
 
-from .base import BACKGROUND_IMG_PATH, get_expected_image, get_pixels, OPTIONS_TO_TEST
+from .base import (
+    BACKGROUND_IMG_PATH,
+    get_expected_image,
+    OPTIONS_TO_TEST,
+    assert_approx,
+)
 
 
-def watermark_image(options: dict) -> dict:
+def watermark_image(
+    options: dict,
+    bg_format: str,
+    mark_format: str,
+    thumb_format: str,
+) -> dict:
     """Creates a watermarked image."""
     # https://github.com/python-pillow/Pillow/issues/835
-    with open(BACKGROUND_IMG_PATH, 'rb') as fd:
-        bg_img = ConvertEngine().get_image(fd)
     options = options.copy()
-    options["format"] = "PNG"
+    options["format"] = thumb_format.upper()
+    options["watermark"] = f"mark.{mark_format}"
+    with open(f"{BACKGROUND_IMG_PATH}.{bg_format}", "rb") as bg_file:
+        bg_img = ConvertEngine().get_image(bg_file)
     marked_img = ConvertEngine().watermark(bg_img, options)
     return marked_img
 
 
-@pytest.mark.parametrize("option", OPTIONS_TO_TEST)
-def test_engine(option):
+@pytest.mark.parametrize("option,format_variation", OPTIONS_TO_TEST)
+def test_engine(option, format_variation):
+    key, value = list(option.items())[0]
     expected = get_expected_image(
-        list(option.keys())[0], list(option.values())[0], engine="convert"
+        key,
+        value,
+        engine="convert",
+        bg_format=format_variation[0],
+        mark_format=format_variation[1],
+        thumb_format=format_variation[2],
     )
-    marked = watermark_image(option)
-    with PILImage.open(marked['source']) as pil_mark:
-        marked_from_disk_pixels = get_pixels(pil_mark)
-        # compare pixel by pixel with an extra assert because it makes the diff easier
-        # to read. should also be failing faster.
-        for idx, expected_pixel in enumerate(get_pixels(expected)):
-            # We have to use approx() because apparently PIL doesnt read the files
-            # written by Convert back 100% the same?
-            assert pytest.approx(expected_pixel, abs=64) == marked_from_disk_pixels[idx]
-
+    marked = watermark_image(
+        option,
+        bg_format=format_variation[0],
+        mark_format=format_variation[1],
+        thumb_format=format_variation[2],
+    )
+    with PILImage.open(marked["source"]) as pil_mark:
+        assert_approx(pil_mark, expected, 64)
