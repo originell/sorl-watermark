@@ -12,14 +12,14 @@ THUMBNAIL_LOG_HANDLER = {
     "class": "sorl.thumbnail.log.ThumbnailLogHandler",
     "level": "ERROR",
 }
-THUMBNAIL_KVSTORE = "watermark_tests_app.kvstore.TestKVStore"
-THUMBNAIL_STORAGE = "watermark_tests_app.storage.TestStorage"
+THUMBNAIL_KVSTORE = "tests.watermark_tests_app.kvstore.TestKVStore"
+THUMBNAIL_STORAGE = "tests.watermark_tests_app.storage.TestStorage"
 THUMBNAIL_VIPSTHUMBNAIL = "vipsthumbnail"
 THUMBNAIL_VIPSHEADER = "vipsheader"
 THUMBNAIL_REDIS_SSL = False
 THUMBNAIL_WATERMARK = "mark.png"
 
-DEFAULT_FILE_STORAGE = "watermark_tests_app.storage.TestStorage"
+DEFAULT_FILE_STORAGE = "tests.watermark_tests_app.storage.TestStorage"
 ADMINS = (("Sorl Watermark", "foobar@example.com"),)
 DATABASES = {
     "default": {
@@ -30,7 +30,7 @@ DATABASES = {
 # FORGIVE ME: ugly, but django wants referenced files to live there
 MEDIA_ROOT = pjoin(PROJ_ROOT, "tests", "fixtures")
 MEDIA_URL = "/media/"
-ROOT_URLCONF = "tests.thumbnail_tests.urls"
+ROOT_URLCONF = "tests.watermark_tests_app.urls"
 INSTALLED_APPS = (
     "django.contrib.auth",
     "django.contrib.contenttypes",

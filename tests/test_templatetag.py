@@ -12,11 +12,11 @@ from .base import BACKGROUND_IMG_PATH, OPTIONS_TO_TEST as BASE_OPTIONS_TO_TEST
 
 TEMPLATE_BASE = "{% load thumbnail %}"
 AVAILABLE_ENGINES = [
-    'sorl_watermarker.engines.pil_engine.Engine',
-    'sorl_watermarker.engines.wand_engine.Engine',
-    'sorl_watermarker.engines.pgmagick_engine.Engine',
-    'sorl_watermarker.engines.convert_engine.Engine',
-    'sorl_watermarker.engines.vips_engine.Engine',
+    "sorl_watermarker.engines.pil_engine.Engine",
+    "sorl_watermarker.engines.wand_engine.Engine",
+    "sorl_watermarker.engines.pgmagick_engine.Engine",
+    "sorl_watermarker.engines.convert_engine.Engine",
+    "sorl_watermarker.engines.vips_engine.Engine",
 ]
 ENGINE_TEST_PARAMS = []
 for engine_to_test in AVAILABLE_ENGINES:
@@ -72,7 +72,7 @@ def test_watermark_options(mocker, db, settings, media_cleanup, engine, option):
     settings.THUMBNAIL_ENGINE = engine
     # bypass cache. we don't need it in our tests. we want to check that options are
     # correctly passed into our watermark handling.
-    mocker.patch('watermark_tests_app.kvstore.TestKVStore.set', return_value=None)
+    mocker.patch("tests.watermark_tests_app.kvstore.TestKVStore.set", return_value=None)
     with open(str(BACKGROUND_IMG_PATH), "rb") as fd:
         ret_img = default.engine.get_image(fd)
     mocked_watermark = mocker.patch(
